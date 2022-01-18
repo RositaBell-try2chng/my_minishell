@@ -100,6 +100,7 @@ typedef struct s_shell
 	t_trlist	*trlist;
 	t_trlist	*temptrlist;
 	t_cmd		*cmd;
+	char		**envp;
 }	t_shell;
 
 //puts.c

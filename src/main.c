@@ -1,11 +1,12 @@
 #include "minishell.h"
 
-int	main(int argc, char **argv)
+int	main(int argc, char **argv, char **envp)
 {
 	t_shell	*shell;
 
 	ms_shell_starterror(argc, argv);
 	shell = ms_shell_init();
+	shell->envp = envp;
 	while (1)
 	{
 		ms_readline_and_lexerlist(shell);
