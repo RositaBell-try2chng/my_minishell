@@ -1,5 +1,6 @@
 NAME	=	libft.a
-SRCS	=	ft_strlen.c ft_strcpy.c ft_strcmp.c ft_strdup.c ft_memset.c ft_memcpy.c ft_memjoin.c ft_split.c ft_gnl.c ft_miniglob.c ft_arrayfree.c ft_free.c
+SRCS	=	ft_strlen.c ft_strcpy.c ft_strcmp.c ft_strdup.c ft_memset.c ft_memcpy.c ft_memjoin.c ft_split.c ft_gnl.c ft_miniglob.c ft_arrayfree.c ft_free.c \
+			ft_strncmp.c
 
 OBJS	=	$(SRCS:.c=.o)
 
