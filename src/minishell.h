@@ -159,6 +159,7 @@ void	ms_prompt_name(t_shell *shell, char *name);
 void	ms_prompt_cwd(t_shell *shell);
 void	ms_cmd_execute_pwd(t_shell *shell);
 void	ms_cmd_execute_exit(t_shell *shell);
+void	ms_cmd_execute_test(t_shell *shell);
 
 //test-info
 void	ms_lexerlist_print(t_shell *shell);
