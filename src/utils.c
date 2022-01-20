@@ -6,7 +6,7 @@ void	ms_shell_starterror(int argc, char **argv)
 	(void)argv;
 	if (argc != 1)
 	{
-		ft_puterror(NULL, 1);
+		ft_puterror(NULL, 1, "");
 	}
 }
 
@@ -17,7 +17,7 @@ t_shell	*ms_shell_init(void)
 
 	shell = (t_shell *)malloc(sizeof(t_shell));
 	if (shell == NULL)
-		ft_puterror(NULL, 2);
+		ft_puterror(NULL, 2, "t_shell");
 	shell->prompt_name = NULL;
 	shell->prompt_line = NULL;
 	shell->input = NULL;
@@ -52,7 +52,7 @@ void	ms_readline_and_lexerlist(t_shell *shell)
 	}
 	if (MS_READLINE_REGIME == 2)
 	{
-		ft_putstr(shell->prompt_line);
+		ft_putstr(shell->prompt_line, 1);
 		while (shell->input == NULL)
 			if (ft_gnl(0, &shell->input) == 0)
 				ft_putexit(shell);

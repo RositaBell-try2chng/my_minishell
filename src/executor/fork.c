@@ -50,9 +50,9 @@ static void	ms_cmd_execute_after_fork(t_shell *shell, pid_t pid)
 		//sigfillset(&(act.sa_mask)); // to block all // Не понял для чего
 		if (sigaction(SIGCHLD, &act, NULL) != 0)
 		{
-			ft_putstr(COLOR_RED);
+			ft_putstr(COLOR_RED, 2);
 			perror("Error with sigaction()");
-			ft_putstr(COLOR_RESET);
+			ft_putstr(COLOR_RESET, 2);
 		}
 	}
 }

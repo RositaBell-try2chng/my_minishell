@@ -50,7 +50,7 @@ static void	ms_tree_execute_cmdline(t_shell *shell, t_tree *tree)
 	if (shell->cmd == NULL)
 		shell->cmd = (t_cmd *)malloc(sizeof(t_cmd));
 	if (shell->cmd == NULL)
-		ft_puterror(shell, 9);
+		ft_puterror(shell, 2, "(struktura CMD).\n");
 	if (tree->type == TREE_SEM)
 	{
 		ms_tree_execute_job(shell, tree->left, false);

@@ -4,15 +4,15 @@
 static void	ms_signal_handler(int sigtype)
 {
 	if (sigtype == SIGINT && MS_TEST_REGIME == 1)
-		ft_putstr("\nVi nazhali \"Ctrl+C\"\n");
+		ft_putstr("\nVi nazhali \"Ctrl+C\"\n", 1);
 	if (sigtype == SIGTSTP && MS_TEST_REGIME == 1)
-		ft_putstr("\nVi nazhali \"Ctrl+Z\"\n");
+		ft_putstr("\nVi nazhali \"Ctrl+Z\"\n", 1);
 	if (sigtype == SIGQUIT && MS_TEST_REGIME == 1)
-		ft_putstr("\nVi nazhali \"Ctrl+\\\"\n");
+		ft_putstr("\nVi nazhali \"Ctrl+\\\"\n", 1);
 	if (sigtype == SIGINT || sigtype == SIGTSTP || sigtype == SIGQUIT)
 	{
 		if (MS_TEST_REGIME == 0)
-			ft_putstr("\n");
+			ft_putstr("\n", 1);
 		rl_on_new_line();
 		rl_replace_line("", 0);
 		rl_redisplay();

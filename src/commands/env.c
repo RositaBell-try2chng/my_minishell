@@ -9,7 +9,7 @@ void	ms_cmd_execute_env(t_shell *shell)
 	env = shell->envp;
 	while (env[++i])
 	{
-		ft_putstr(env[i]);
+		ft_putstr(env[i], 1);
 		write(1, "\n", 1);
 	}
 	exit(0);

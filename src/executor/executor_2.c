@@ -15,7 +15,7 @@ static void	ms_tree_execute_args(t_shell *shell, t_tree *node,
 	}
 	shell->cmd->argv = (char **)malloc(sizeof(char *) * (i + 1));
 	if (shell->cmd->argv == NULL)
-		ft_puterror(shell, 10);
+		ft_puterror(shell, 2, "(massiv cmd->argv).\n");
 	temp = node;
 	i = 0;
 	while (temp != NULL && (temp->type == TREE_ARG || temp->type == TREE_FILE))

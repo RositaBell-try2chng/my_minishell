@@ -6,7 +6,7 @@ static void	ms_trlist_malloc_first(t_shell *shell, t_tree *node)
 	if (shell->trlist == NULL)
 	{
 		ft_free((void **)&node);
-		ft_puterror(shell, 8);
+		ft_puterror(shell, 2, "(spisok uzlov lexer-dereva).\n");
 	}
 	shell->trlist->node = node;
 	shell->trlist->clear = false;
@@ -21,7 +21,7 @@ static void	ms_trlist_malloc_next(t_shell *shell, t_tree *node)
 	if (shell->temptrlist->next == NULL)
 	{
 		ft_free((void **)&node);
-		ft_puterror(shell, 8);
+		ft_puterror(shell, 2, "(spisok uzlov lexer-dereva).\n");
 	}
 	shell->temptrlist = shell->temptrlist->next;
 	shell->temptrlist->node = node;
@@ -36,7 +36,7 @@ t_tree	*ms_tree_malloc(t_shell *shell)
 
 	node = (t_tree *)malloc(sizeof(t_tree));
 	if (node == NULL)
-		ft_puterror(shell, 7);
+		ft_puterror(shell, 2, "(lexer-dereva).\n");
 	if (shell->trlist != NULL)
 		ms_trlist_malloc_next(shell, node);
 	if (shell->trlist == NULL)
@@ -67,9 +67,9 @@ int	ms_lexerlist_parse(t_shell *shell)
 	{
 		if (shell->lexerlist != NULL)
 		{
-			ft_putstr(COLOR_RED);
-			ft_putstr("Error: Sintaksicheskaya oshibka\n");
-			ft_putstr(COLOR_RESET);
+			ft_putstr(COLOR_RED, 2);
+			ft_putstr("Error: Sintaksicheskaya oshibka\n", 2);
+			ft_putstr(COLOR_RESET, 2);
 		}
 		return (-1);
 	}
@@ -77,11 +77,11 @@ int	ms_lexerlist_parse(t_shell *shell)
 	shell->lexertree = ms_parse_cmdline(shell);
 	if (shell->templexer != NULL && shell->templexer->type != 0)
 	{
-		ft_putstr(COLOR_RED);
-		ft_putstr("Error: Sintaksicheskaya oshibka \"");
-		ft_putstr(shell->templexer->value);
-		ft_putstr("\"\n");
-		ft_putstr(COLOR_RESET);
+		ft_putstr(COLOR_RED, 2);
+		ft_putstr("Error: Sintaksicheskaya oshibka \"", 2);
+		ft_putstr(shell->templexer->value, 2);
+		ft_putstr("\"\n", 2);
+		ft_putstr(COLOR_RESET, 2);
 		shell->output_error = 1;
 		return (-1);
 	}

@@ -17,7 +17,7 @@ void	ms_prompt_name(t_shell *shell, char *name)
 	shell->prompt_name = (char *)malloc(name_len + 1);
 	shell->prompt_line = (char *)malloc(prompt_line_len + 1);
 	if (shell->prompt_name == NULL || shell->prompt_line == NULL)
-		ft_puterror(shell, 3);
+		ft_puterror(shell, 2, "(privetstvie).\n");
 	ft_strcpy(shell->prompt_name, name);
 	ft_strcpy(shell->prompt_line, COLOR_ORANGE);
 	ft_memjoin(shell->prompt_line, name);
@@ -42,7 +42,7 @@ void	ms_prompt_cwd(t_shell *shell)
 		+ ft_strlen(COLOR_BLUE) + ft_strlen(COLOR_RESET) + 3;
 	shell->prompt_line = (char *)malloc(prompt_line_len + 1);
 	if (shell->prompt_line == NULL)
-		ft_puterror(shell, 3);
+		ft_puterror(shell, 2, "(privetstvie).\n");
 	ft_strcpy(shell->prompt_line, COLOR_ORANGE);
 	ft_memjoin(shell->prompt_line, shell->prompt_name);
 	ft_memjoin(shell->prompt_line, ":");
@@ -56,15 +56,15 @@ void	ms_cmd_execute_prompt(t_shell *shell)
 {
 	if (shell->cmd->argc == 1)
 	{
-		ft_putstr(COLOR_RED);
-		ft_putstr("prompt: neobhodimo ukazat text novogo privetstviya\n");
-		ft_putstr(COLOR_RESET);
+		ft_putstr(COLOR_RED, 2);
+		ft_putstr("prompt: neobhodimo ukazat text novogo privetstviya\n", 2);
+		ft_putstr(COLOR_RESET, 2);
 	}
 	else if (shell->cmd->argc > 2)
 	{
-		ft_putstr(COLOR_RED);
-		ft_putstr("Prompt: neobhodimo ukazat tolko odin parametr\n");
-		ft_putstr(COLOR_RESET);
+		ft_putstr(COLOR_RED, 2);
+		ft_putstr("Prompt: neobhodimo ukazat tolko odin parametr\n", 2);
+		ft_putstr(COLOR_RESET, 2);
 	}
 	else
 	{

@@ -21,13 +21,13 @@ t_lexer	*ms_lexerlist_add(t_shell *shell, int value_length)
 	lexerlist = (t_lexer *)malloc(sizeof(t_lexer));
 	if (lexerlist == NULL)
 	{
-		ft_puterror(shell, 4);
+		ft_puterror(shell, 2, "(t_lexer *).\n");
 	}
 	lexerlist->value = (char *)malloc(value_length + 1);
 	if (lexerlist->value == NULL)
 	{
 		ft_free((void **)&lexerlist);
-		ft_puterror(shell, 5);
+		ft_puterror(shell, 2, "(znachenie elementa lexera).\n");
 	}
 	lexerlist->value[0] = '\0';
 	lexerlist->type = '\0';
@@ -47,7 +47,7 @@ static void	ms_lexer_glob(t_shell *shell, int files_count, char ***files)
 	if (shell->templexer->value == NULL)
 	{
 		ft_arrayfree((void ***)files, files_count);
-		ft_puterror(shell, 5);
+		ft_puterror(shell, 2, "(znachenie elementa lexera).\n");
 	}
 	ft_strcpy(shell->templexer->value, (*files)[0]);
 	i = 0;
@@ -78,7 +78,7 @@ void	ms_lexerlist_build(t_shell *shell)
 			if (files_count == -2)
 				ft_puterror_noexit(shell, 1);
 			if (files_count == -1)
-				ft_puterror(shell, 6);
+				ft_puterror(shell, 2, "(funkciya miniglob).\n");
 			if (files_count == 0)
 				shell->lexercount++;
 			if (files_count > 0)

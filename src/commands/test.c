@@ -6,7 +6,7 @@ void	ms_cmd_execute_test(t_shell *shell)
 	int		gnl_counter;
 
 	if (shell->cmd->argc != 1)
-		ft_putstr(COLOR_RED"test: parametri ne nuzhny\n"COLOR_RESET);
+		ft_putstr(COLOR_RED"test: parametri ne nuzhny\n"COLOR_RESET, 2);
 	else
 	{
 		gnl_counter = 0;
