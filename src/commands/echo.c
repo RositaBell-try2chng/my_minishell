@@ -4,15 +4,24 @@ static void	print_variable(char *s, char **env)
 {
 	size_t	i;
 	size_t	j;
+	char	flg;
 
 	s++;
 	i = 0;
+	flg = 0;
 	while (s[i])
 		i++;
-	while (*env && ft_strncmp(s, *env, i))
-		env++;
+	while (!flg && *env)
+	{
+		while (*env && ft_strncmp(s, *env, i))
+			env++;
+		if (*env && (*env)[i + 1] == '=')
+			flg = 1;
+		else if (*env)
+			env++;
+	}
 	if (!(*env))
-		return ;
+		return;
 	j = 0;
 	while ((*env)[i + j + 1])
 		j++;
