@@ -25,7 +25,10 @@ SRCS	=	main.c utils.c signals.c puts.c prints.c \
 			commands/echo.c \
 			commands/env.c \
 			commands/export.c \
-			commands/unset.c
+			commands/unset.c \
+			commands/test.c \
+			commands/exit.c
+
 OBJS	=	$(addprefix $(SRC_DIR),$(SRCS:.c=.o))
 CC		=	gcc
 CFLAGS	=	-Wall -Wextra -Werror -g
