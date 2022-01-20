@@ -7,6 +7,7 @@ void	ms_cmd_execute_export(t_shell *shell)
 	char	**new_env;
 
 	j = 0;
+	ms_cmd_execute_unset(shell);
 	while ((shell->envp)[j])
 		j++;
 	new_env = malloc(sizeof(char *) * (j + shell->cmd->argc));

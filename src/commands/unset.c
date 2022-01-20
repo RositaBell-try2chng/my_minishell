@@ -11,7 +11,7 @@ static int	find_variable(char **env, char *s)
 	res = 0;
 	while (s[i])
 		i++;
-	while (!flg && *env)
+	while (!flg && env[res])
 	{
 		while (env[res] && ft_strncmp(s, env[res], i))
 			res++;

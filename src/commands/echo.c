@@ -51,7 +51,7 @@ void	ms_cmd_execute_echo(t_shell *shell)
 				write(1, " ", 1);
 			}
 		}
-		if (flg_n)
+		if (!flg_n)
 			write(1, "\n", 1);
 		exit(0);
 }
