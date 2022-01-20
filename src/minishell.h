@@ -38,7 +38,6 @@
 # define TREE_FILE				6
 # define TREE_ARG				7
 
-int						g_output_error;
 typedef struct s_lexer	t_lexer;
 typedef struct s_tree	t_tree;
 typedef struct s_trlist	t_trlist;
@@ -83,6 +82,7 @@ typedef struct s_cmd
 
 typedef struct s_shell
 {
+	int			output_error;
 	char		*prompt_name;
 	char		*prompt_line;
 	char		*input;
@@ -103,13 +103,13 @@ typedef struct s_shell
 	char		**envp;
 }	t_shell;
 
-
-//
+//Ruslan :)
 char	**envp_cpy(char **env);
+
 //puts.c
 void	ft_putstr(char *str);
 void	ft_puterror(t_shell *shell, int code);
-void	ft_puterror_noexit(int code);
+void	ft_puterror_noexit(t_shell *shell, int code);
 void	ft_putexit(t_shell *shell);
 
 // main_utils.c

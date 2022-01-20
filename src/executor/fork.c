@@ -2,9 +2,21 @@
 
 static int	ms_cmd_execute_command(t_shell *shell)
 {
-	if (ft_strcmp(shell->cmd->argv[0], "pwd") == 0)
+	if (ft_strcmp(shell->cmd->argv[0], "cd") == 0)
+		ms_cmd_execute_cd(shell);
+	else if (ft_strcmp(shell->cmd->argv[0], "prompt") == 0)
+		ms_cmd_execute_prompt(shell);
+	else if (ft_strcmp(shell->cmd->argv[0], "pwd") == 0)
 		ms_cmd_execute_pwd(shell);
-	return (0);
+	else if (ft_strcmp(shell->cmd->argv[0], "test") == 0)
+		ms_cmd_execute_test(shell);
+	else if (ft_strcmp(shell->cmd->argv[0], "exit") == 0)
+		ms_cmd_execute_exit(shell);
+	else if (execvp(shell->cmd->argv[0], shell->cmd->argv) == -1) // !!!Заменить на execve после добавления envp[] 3-м параметром!!!
+		return (0);
+	ms_cmd_argv_free(shell->cmd);
+	ms_shell_destroy(shell);
+	exit(0);
 }
 
 static void	ms_execute_zombie_handler(int signum)
@@ -35,7 +47,7 @@ static void	ms_cmd_execute_after_fork(t_shell *shell, pid_t pid)
 		printf("Process %d started\n", pid);
 		act.sa_flags = 0;
 		act.sa_handler = ms_execute_zombie_handler;
-		//sigfillset(&(act.sa_mask)); // to block all
+		//sigfillset(&(act.sa_mask)); // to block all // Не понял для чего
 		if (sigaction(SIGCHLD, &act, NULL) != 0)
 		{
 			ft_putstr(COLOR_RED);

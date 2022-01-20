@@ -76,14 +76,15 @@ void	ms_lexerlist_build(t_shell *shell)
 		{
 			files_count = ft_miniglob(shell->templexer->value, &files);
 			if (files_count == -2)
-				ft_puterror_noexit(1);
+				ft_puterror_noexit(shell, 1);
 			if (files_count == -1)
 				ft_puterror(shell, 6);
 			if (files_count == 0)
 				shell->lexercount++;
 			if (files_count > 0)
 				ms_lexer_glob(shell, files_count, &files);
-			ft_arrayfree((void ***)&files, files_count);
+			if (files_count >= 0)
+				ft_arrayfree((void ***)&files, files_count);
 		}
 		shell->templexer = shell->templexer->next;
 	}

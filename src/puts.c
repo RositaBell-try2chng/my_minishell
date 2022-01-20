@@ -57,14 +57,14 @@ void	ft_puterror(t_shell *shell, int code)
 }
 
 //Вывод ошибок без выхода из программы
-void	ft_puterror_noexit(int code)
+void	ft_puterror_noexit(t_shell *shell, int code)
 {
 	ft_putstr(COLOR_RED);
 	ft_putstr("Error: ");
 	if (code == 1)
 		ft_putstr("Ne udalos voyti v ukazannuyu directoriyu\n");
 	ft_putstr(COLOR_RESET);
-	g_output_error = 1;
+	shell->output_error = 1;
 }
 
 //Вывод сообщения о выходе

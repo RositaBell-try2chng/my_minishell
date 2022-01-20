@@ -61,8 +61,18 @@ bool	ms_parse_lexertype(t_shell *shell, int lexertype, char **bufptr)
 
 int	ms_lexerlist_parse(t_shell *shell)
 {
-	if (g_output_error != 0 || shell->lexercount == 0)
+	if (shell->output_error != 0)
 		return (-1);
+	if (shell->lexercount == 0)
+	{
+		if (shell->lexerlist != NULL)
+		{
+			ft_putstr(COLOR_RED);
+			ft_putstr("Error: Sintaksicheskaya oshibka\n");
+			ft_putstr(COLOR_RESET);
+		}
+		return (-1);
+	}
 	shell->templexer = shell->lexerlist;
 	shell->lexertree = ms_parse_cmdline(shell);
 	if (shell->templexer != NULL && shell->templexer->type != 0)
@@ -72,7 +82,7 @@ int	ms_lexerlist_parse(t_shell *shell)
 		ft_putstr(shell->templexer->value);
 		ft_putstr("\"\n");
 		ft_putstr(COLOR_RESET);
-		g_output_error = 1;
+		shell->output_error = 1;
 		return (-1);
 	}
 	return (0);

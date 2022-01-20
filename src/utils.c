@@ -42,7 +42,7 @@ t_shell	*ms_shell_init(void)
 // Считывание командной строки и запуск лексера
 void	ms_readline_and_lexerlist(t_shell *shell)
 {
-	g_output_error = 0;
+	shell->output_error = 0;
 	shell->lexercount = 0;
 	if (MS_READLINE_REGIME == 1)
 	{

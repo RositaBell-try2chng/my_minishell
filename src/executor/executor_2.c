@@ -30,12 +30,17 @@ static void	ms_tree_execute_args(t_shell *shell, t_tree *node,
 
 static void	ms_cmd_execute(t_shell *shell)
 {
-	if (ft_strcmp(shell->cmd->argv[0], "cd") == 0)
+	if (ft_strcmp(shell->cmd->argv[0], "cd") == 0 && shell->cmd->async == 0)
 		return (ms_cmd_execute_cd(shell));
-	if (ft_strcmp(shell->cmd->argv[0], "prompt") == 0)
+	if (ft_strcmp(shell->cmd->argv[0], "prompt") == 0 && shell->cmd->async == 0)
 		return (ms_cmd_execute_prompt(shell));
-	if (ft_strcmp(shell->cmd->argv[0], "exit") == 0)
-		return (ms_cmd_execute_exit(shell));
+	if (ft_strcmp(shell->cmd->argv[0], "exit") == 0 && shell->cmd->async == 0)
+	{
+		ms_cmd_execute_exit(shell);
+		ms_cmd_argv_free(shell->cmd);
+		ms_shell_destroy(shell);
+		exit(0);
+	}
 	ms_cmd_execute_fork(shell);
 }
 
