@@ -107,8 +107,8 @@ typedef struct s_shell
 char	**envp_cpy(char **env);
 
 //puts.c
-void	ft_putstr(char *str);
-void	ft_puterror(t_shell *shell, int code);
+void	ft_putstr(char *str, int std_var);
+void	ft_puterror(t_shell *shell, int code, char *name);
 void	ft_puterror_noexit(t_shell *shell, int code);
 void	ft_putexit(t_shell *shell);
 
