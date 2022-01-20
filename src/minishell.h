@@ -103,6 +103,9 @@ typedef struct s_shell
 	char		**envp;
 }	t_shell;
 
+
+//
+char	**envp_cpy(char **env);
 //puts.c
 void	ft_putstr(char *str);
 void	ft_puterror(t_shell *shell, int code);
