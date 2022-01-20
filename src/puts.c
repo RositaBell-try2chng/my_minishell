@@ -25,6 +25,8 @@ void	ft_puterror(t_shell *shell, int code, char *name)
 		ft_putstr("Ne udalos videlit pamyat. ", 2);
 		ft_putstr(name, 2);
 	}
+	if (code == 3)
+		ft_putstr("Error with excve\n", 2);
 	ft_putstr(COLOR_RESET, 2);
 	ms_shell_destroy(shell);
 	exit(1);

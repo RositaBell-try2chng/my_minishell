@@ -18,7 +18,7 @@ SRCS	=	main.c utils.c signals.c puts.c prints.c \
 			parser/parser.c parser/destroy.c \
 			parser/parser_1.c parser/parser_2.c parser/parser_3.c \
 			executor/executor_1.c executor/executor_2.c \
-			executor/fork.c executor/fork_utils.c \
+			executor/fork.c executor/fork_utils.c executor/fork_utils_2.c \
 			commands/cd.c \
 			commands/prompt.c \
 			commands/pwd.c \

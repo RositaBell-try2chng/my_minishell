@@ -20,7 +20,7 @@
 
 # define OS_VERSION				2 // 1 - MAC, 2 - LINUX
 # define MSH_DEFNAME			"MiniShell"
-# define MS_TEST_REGIME			1 // 1 - Test info, 0 - No test info
+# define MS_TEST_REGIME			0 // 1 - Test info, 0 - No test info
 # define MS_READLINE_REGIME		1 // 1 - ReadLine (history), 2 - GNL (no leaks)
 # define COLOR_GREEN			"\x1b[38;5;118m"
 # define COLOR_RED				"\x1b[38;5;196m"
@@ -151,6 +151,7 @@ void	ms_cmd_execute_fd_null(t_shell *shell);
 void	ms_cmd_execute_fd_redirect_in(t_shell *shell);
 void	ms_cmd_execute_fd_redirect_out(t_shell *shell);
 void	ms_cmd_execute_command_error(t_shell *shell, int tempfd_stdout);
+void	do_shell_command(t_shell *shell);
 
 //commands
 void	ms_cmd_execute_cd(t_shell *shell);
@@ -160,6 +161,10 @@ void	ms_prompt_cwd(t_shell *shell);
 void	ms_cmd_execute_pwd(t_shell *shell);
 void	ms_cmd_execute_exit(t_shell *shell);
 void	ms_cmd_execute_test(t_shell *shell);
+void	ms_cmd_execute_export(t_shell *shell);
+void	ms_cmd_execute_env(t_shell *shell);
+void	ms_cmd_execute_unset(t_shell *shell);
+void	ms_cmd_execute_echo(t_shell *shell);
 
 //test-info
 void	ms_lexerlist_print(t_shell *shell);

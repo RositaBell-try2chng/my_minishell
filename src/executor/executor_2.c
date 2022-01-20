@@ -34,6 +34,10 @@ static void	ms_cmd_execute(t_shell *shell)
 		return (ms_cmd_execute_cd(shell));
 	if (ft_strcmp(shell->cmd->argv[0], "prompt") == 0 && shell->cmd->async == 0)
 		return (ms_cmd_execute_prompt(shell));
+	if (ft_strcmp(shell->cmd->argv[0], "export") == 0 && shell->cmd->async == 0)
+		return (ms_cmd_execute_export(shell));
+	if (ft_strcmp(shell->cmd->argv[0], "unset") == 0 && shell->cmd->async == 0)
+		return (ms_cmd_execute_unset(shell));
 	if (ft_strcmp(shell->cmd->argv[0], "exit") == 0 && shell->cmd->async == 0)
 	{
 		ms_cmd_execute_exit(shell);
