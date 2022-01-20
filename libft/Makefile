@@ -2,6 +2,8 @@ NAME	=	libft.a
 SRCS	=	ft_strlen.c ft_strcpy.c ft_strcmp.c ft_strdup.c ft_memset.c ft_memcpy.c ft_memjoin.c ft_split.c ft_gnl.c ft_miniglob.c ft_arrayfree.c ft_free.c \
 			ft_strncmp.c
 
+HEAD	=	libft.h
+
 OBJS	=	$(SRCS:.c=.o)
 
 CC		=	gcc
@@ -10,10 +12,10 @@ RM 		= 	rm -f
 
 all: 		$(NAME)
 
-%.o:%.c
+%.o:%.c		$(HEAD)
 			$(CC) $(CFLAGS) -I . -o $@ -c $<
 
-$(NAME):	$(OBJS)
+$(NAME):	$(HEAD) $(OBJS)
 			ar rcs $(NAME) $(OBJS)
 			ranlib $(NAME)
 

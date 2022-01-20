@@ -29,6 +29,10 @@ SRCS	=	main.c utils.c signals.c puts.c prints.c \
 			commands/test.c \
 			commands/exit.c
 
+HEAD	=	src/minishell.h
+
+HEAD_L	=	libft/libft.h
+
 OBJS	=	$(addprefix $(SRC_DIR),$(SRCS:.c=.o))
 CC		=	gcc
 CFLAGS	=	-Wall -Wextra -Werror -g
@@ -36,13 +40,14 @@ RM 		= 	rm -f
 
 all:		$(FT_LIB) $(NAME)
 
-$(SRC_DIR)%.o:$(SRC_DIR)%.c
+$(SRC_DIR)%.o:$(SRC_DIR)%.c $(HEAD)
 			$(CC) $(CFLAGS) -I $(FT_DIR) -I $(SRC_DIR) $(RL_INC) -o $@ -c $<
 
 $(FT_LIB):
 			make -C $(FT_DIR)
 
-$(NAME):	$(OBJS)
+$(NAME):	$(HEAD_L) $(OBJS)
+			make -C $(FT_DIR)
 			$(CC) $(CFLAGS) $(RL_LIB) -lreadline -lhistory $(OBJS) $(FT_LNK) -lm -o $(NAME)
 
 clean:
