@@ -6,7 +6,7 @@ void	ft_putstr(char *str, int std_var)
 	int	i;
 
 	if (str == NULL)
-		str = "(null)";
+		str = "(null)\n";
 	i = 0;
 	while (str[i])
 		i++;
@@ -26,7 +26,12 @@ void	ft_puterror(t_shell *shell, int code, char *name)
 		ft_putstr(name, 2);
 	}
 	if (code == 3)
-		ft_putstr("Error with excve\n", 2);
+		ft_putstr("excve\n", 2);
+	if (code == 4)
+	{
+		ft_putstr("incorrect variable. ", 2);
+		ft_putstr(name, 2);
+	}
 	ft_putstr(COLOR_RESET, 2);
 	ms_shell_destroy(shell);
 	exit(1);

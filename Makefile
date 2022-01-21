@@ -24,7 +24,7 @@ SRCS	=	main.c utils.c signals.c puts.c prints.c \
 			commands/pwd.c \
 			commands/echo.c \
 			commands/env.c \
-			commands/export.c \
+			commands/export.c src/commands/export_utils.c \
 			commands/unset.c \
 			commands/test.c \
 			commands/exit.c
