@@ -165,6 +165,7 @@ void	ms_cmd_execute_export(t_shell *shell);
 void	ms_cmd_execute_env(t_shell *shell);
 void	ms_cmd_execute_unset(t_shell *shell);
 void	ms_cmd_execute_echo(t_shell *shell);
+int		count_correct_var(t_shell *shell, char **argv, int argc);
 
 //test-info
 void	ms_lexerlist_print(t_shell *shell);

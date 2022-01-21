@@ -10,6 +10,7 @@
 
 # define GNL_BUFF_SIZE	32
 
+int		ft_isalpha(int c);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
 int		ft_strlen(const char *str);
 char	*ft_strcpy(char *dst, const char *src);
