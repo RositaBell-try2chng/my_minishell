@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-static int	find_variable(char **env, char *s)
+int	find_variable(char **env, char *s)
 {
 	size_t	i;
 	int		res;
@@ -11,7 +11,6 @@ static int	find_variable(char **env, char *s)
 	res = 0;
 	while (s[i] != '=' && s[i])
 		i++;
-	printf("i = %zu\n", i);
 	while (!flg && env[res])
 	{
 		while (env[res] && ft_strncmp(s, env[res], i))
@@ -47,7 +46,6 @@ void	ms_cmd_execute_unset(t_shell *shell)
 	while (++i < shell->cmd->argc)
 	{
 		j = find_variable(shell->envp, (shell->cmd->argv)[i]);
-		printf("j = %d\n", j);
 		if (j > 0)
 			delete_variable(shell->envp + j);
 	}

@@ -166,6 +166,10 @@ void	ms_cmd_execute_env(t_shell *shell);
 void	ms_cmd_execute_unset(t_shell *shell);
 void	ms_cmd_execute_echo(t_shell *shell);
 int		count_correct_var(t_shell *shell, char **argv, int argc);
+int		check_correct_var(char *s, char flg);
+int		find_variable(char **env, char *s);
+int		add_var(char ***new_env, char *s, int j, int index);
+int		app_end_var(char ***new_env, char *s, int j, int index);
 
 //test-info
 void	ms_lexerlist_print(t_shell *shell);
