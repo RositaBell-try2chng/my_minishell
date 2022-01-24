@@ -21,13 +21,11 @@ char	**envp_cpy(char **env, t_shell *shell)
 	char	**new_env;
 
 	i = 0;
-	if (!env)
-		return (NULL);
 	while (env[i])
 		i++;
 	new_env = malloc(sizeof(char *) * (i + 1));
 	if (!new_env)
-		return (NULL);
+		ft_puterror(shell, 2, "environment\n");
 	shell->env_size = i + 1;
 	new_env[i] = NULL;
 	i = -1;
