@@ -52,7 +52,7 @@ static void	sort_envp(char **env)
 				tmp = env[i - 1];
 				env[i - 1] = env[i];
 				env[i] = tmp;
-				flg_sort = 1;
+				flg_sort = 0;
 			}
 		}
 		j = i;
