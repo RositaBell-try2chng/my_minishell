@@ -1,20 +1,24 @@
 #include "minishell.h"
 
+static char **copy_old_env(char **new_env, t_shell *shell, int j)
+{
+	if (new_env != NULL)
+	{
+		while (--j >= 0)
+			new_env[j] = shell->envp[j];
+		free(shell->envp);
+		return (new_env);
+	}
+	return (shell->envp);
+}
+
 static void	make_new_env(char ***new_env, t_shell *shell, int j)
 {
 	int	flg;
 	int	i;
-	int	tmp_j;
 	int index;
 
-	tmp_j = j;
-	if (*new_env != NULL)
-	{
-		while (--tmp_j >= 0)
-			(*new_env)[j] = shell->envp[j];
-	}
-	else
-		*new_env = shell->envp;
+	*new_env = copy_old_env(*new_env, shell, j);
 	i = 0;
 	while (++i < shell->cmd->argc)
 	{
@@ -78,6 +82,7 @@ void	ms_cmd_execute_export(t_shell *shell)
 	int 	j;
 	int		cnt;
 	char	**new_env;
+	int		i;
 
 	j = 0;
 	if (shell->cmd->argc == 1)
@@ -91,7 +96,10 @@ void	ms_cmd_execute_export(t_shell *shell)
 		new_env = malloc(sizeof(char *) * (j + cnt + 1));
 		if (!new_env)
 			return ;
-		new_env[j + cnt] = NULL;
+		i = -1;
+		while (++i <= j + cnt)
+			new_env[i] = NULL;
 	}
 	make_new_env(&new_env, shell, j);
+	shell->envp = new_env;
 }

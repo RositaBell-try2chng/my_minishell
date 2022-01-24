@@ -9,13 +9,13 @@ int	find_variable(char **env, char *s)
 	i = 0;
 	flg = 0;
 	res = 0;
-	while (s[i] != '=' && s[i])
+	while (s[i] != '=' && s[i] != '+' && s[i])
 		i++;
 	while (!flg && env[res])
 	{
 		while (env[res] && ft_strncmp(s, env[res], i))
 			res++;
-		if (env[res] && env[res][i] == '=')
+		if (env[res] && (env[res][i] == '=' || env[res][i] == '+'))
 			flg = 1;
 		else if (env[res])
 			res++;
@@ -48,5 +48,21 @@ void	ms_cmd_execute_unset(t_shell *shell)
 		j = find_variable(shell->envp, (shell->cmd->argv)[i]);
 		if (j > 0)
 			delete_variable(shell->envp + j);
+	}
+}
+
+void delete_if_need(char *s)
+{
+	size_t	i;
+
+	i = 0;
+	while (s[i] && s[i] != '=')
+		i++;
+	if (!s[i] || s[i - 1] != '+')
+		return ;
+	while (s[i - 1])
+	{
+		s[i - 1] = s[i];
+		i++;
 	}
 }

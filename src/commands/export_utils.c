@@ -3,17 +3,19 @@
 int	check_correct_var(char *s, char flg)
 {
 	size_t	i;
+	char	flg_correct;
 
 	i = 0;
+	flg_correct = 1;
 	if (!ft_isalpha(s[i++]))
-		return (0);
-	while (ft_isalpha(s[i]) || (s[i] >= '0' && s[i] <= '9'))
+		flg_correct = 0;
+	while (flg_correct && (ft_isalpha(s[i]) || (s[i] >= '0' && s[i] <= '9')))
 		i++;
-	if (s[i] == '+' && s[i + 1] == '=')
+	if (flg_correct && s[i] == '+' && s[i + 1] == '=')
 		return (2);
-	if (s[i] == '=')
+	if (flg_correct && s[i] == '=')
 		return (1);
-	if (s[i] && flg)
+	if ((s[i] || !flg_correct) && flg)
 	{
 		write(2, "variable incorrect - ", 21);
 		ft_putstr(s, 2);
@@ -77,23 +79,35 @@ int	add_var(char ***new_env, char *s, int j, int index)
 		ft_putstr("not enough memory for new variable\n", 2);
 		return (j);
 	}
+	delete_if_need((*new_env)[j]);
 	return (++j);
 }
 
 int	app_end_var(char ***new_env, char *s, int j, int index)
 {
 	char	*tmp;
+	size_t	size;
 
 	if (index < 0)
 		return (add_var(new_env, s, j, index));
 	tmp = (*new_env)[index];
-	(*new_env)[index] = ft_memjoin((void *)((*new_env)[index]), (void *)s);
+	size = 0;
+	while (s[size] != '+')
+		size++;
+	(*new_env)[index] = malloc(ft_strlen(tmp) + \
+	ft_strlen(s + size + 1) * sizeof(char));
 	if (!(*new_env)[index])
 	{
 		ft_putstr("not enough memory for append variable\n", 2);
 		(*new_env)[index] = tmp;
+		return (j);
 	}
-	else
-		free(tmp);
+	size = -1;
+	while (tmp[++size])
+		(*new_env)[index][size] = tmp[size];
+	(*new_env)[index][size] = '\0';
+	(*new_env)[index] = ft_memjoin((void *)((*new_env)[index]), \
+	(void *)(s + size - 1));
+	free(tmp);
 	return (j);
 }

@@ -170,6 +170,7 @@ int		check_correct_var(char *s, char flg);
 int		find_variable(char **env, char *s);
 int		add_var(char ***new_env, char *s, int j, int index);
 int		app_end_var(char ***new_env, char *s, int j, int index);
+void	delete_if_need(char *s);
 
 //test-info
 void	ms_lexerlist_print(t_shell *shell);
