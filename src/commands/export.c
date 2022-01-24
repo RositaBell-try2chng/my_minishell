@@ -96,6 +96,7 @@ void	ms_cmd_execute_export(t_shell *shell)
 		new_env = malloc(sizeof(char *) * (j + cnt + 1));
 		if (!new_env)
 			return ;
+		shell->env_size = j + cnt + 1;
 		i = -1;
 		while (++i <= j + cnt)
 			new_env[i] = NULL;

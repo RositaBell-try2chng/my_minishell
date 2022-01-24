@@ -34,6 +34,7 @@ t_shell	*ms_shell_init(void)
 	shell->trlist = NULL;
 	shell->temptrlist = NULL;
 	shell->cmd = NULL;
+	shell->env_size = 0;
 	ms_ignore_signals(shell);
 	ms_prompt_name(shell, MSH_DEFNAME);
 	return (shell);
@@ -88,6 +89,7 @@ void	ms_shell_destroy(t_shell *shell)
 			ms_trlist_destroy(shell);
 		if (shell->cmd != NULL)
 			ft_free((void **)&shell->cmd);
+		ft_arrayfree((void ***)&(shell->envp), shell->env_size);
 		ft_free((void **)&shell);
 		shell = NULL;
 	}

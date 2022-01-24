@@ -15,7 +15,7 @@ void	ms_cmd_execute_env(t_shell *shell)
 	exit(0);
 }
 
-char	**envp_cpy(char **env)
+char	**envp_cpy(char **env, t_shell *shell)
 {
 	size_t	i;
 	char	**new_env;
@@ -28,6 +28,7 @@ char	**envp_cpy(char **env)
 	new_env = malloc(sizeof(char *) * (i + 1));
 	if (!new_env)
 		return (NULL);
+	shell->env_size = i + 1;
 	new_env[i] = NULL;
 	i = -1;
 	while (new_env && env[++i])

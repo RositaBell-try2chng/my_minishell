@@ -101,10 +101,11 @@ typedef struct s_shell
 	t_trlist	*temptrlist;
 	t_cmd		*cmd;
 	char		**envp;
+	int			env_size;
 }	t_shell;
 
 //Ruslan :)
-char	**envp_cpy(char **env);
+char	**envp_cpy(char **env, t_shell *shell);
 
 //puts.c
 void	ft_putstr(char *str, int std_var);
