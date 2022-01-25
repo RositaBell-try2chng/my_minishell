@@ -12,13 +12,13 @@ RL_DIR	=	/Users/ztune/.brew/Cellar/readline/8.1.1
 #RL_LIB	=	-L $(RL_DIR)/lib # Закоментировать для Linux
 
 # Параметры сборки и удаления
+HEAD	=	./src/minishell.h
+HEAD_L	=	./libft/libft.h
 NAME	=	minishell
 SRCS	=	main.c utils.c signals.c puts.c prints.c \
-			lexer/lexer.c lexer/parser.c lexer/destroy.c \
-			parser/parser.c parser/destroy.c \
-			parser/parser_1.c parser/parser_2.c parser/parser_3.c \
-			executor/executor_1.c executor/executor_2.c \
-			executor/fork.c executor/fork_utils.c executor/fork_utils_2.c \
+			lexer/lexer.c lexer/parser.c lexer/corrector.c lexer/destroy.c \
+			parser/parser.c parser/parser_1.c parser/parser_2.c parser/parser_3.c parser/parser_dbl.c parser/destroy.c \
+			executor/executor_1.c executor/executor_2.c executor/executor_3.c executor/fork.c executor/heredoc.c executor/fork_utils.c executor/fork_utils_2.c \
 			commands/cd.c \
 			commands/prompt.c \
 			commands/pwd.c \
@@ -28,10 +28,6 @@ SRCS	=	main.c utils.c signals.c puts.c prints.c \
 			commands/unset.c \
 			commands/test.c \
 			commands/exit.c
-
-HEAD	=	src/minishell.h
-
-HEAD_L	=	libft/libft.h
 
 OBJS	=	$(addprefix $(SRC_DIR),$(SRCS:.c=.o))
 CC		=	gcc
@@ -43,11 +39,10 @@ all:		$(FT_LIB) $(NAME)
 $(SRC_DIR)%.o:$(SRC_DIR)%.c $(HEAD)
 			$(CC) $(CFLAGS) -I $(FT_DIR) -I $(SRC_DIR) $(RL_INC) -o $@ -c $<
 
-$(FT_LIB):
+$(FT_LIB):	$(HEAD_L)
 			make -C $(FT_DIR)
 
-$(NAME):	$(HEAD_L) $(OBJS)
-			make -C $(FT_DIR)
+$(NAME):	$(OBJS)
 			$(CC) $(CFLAGS) $(RL_LIB) -lreadline -lhistory $(OBJS) $(FT_LNK) -lm -o $(NAME)
 
 clean:

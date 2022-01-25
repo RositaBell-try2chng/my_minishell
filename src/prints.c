@@ -78,5 +78,7 @@ void	ms_cmd_print(t_cmd *cmd)
 	printf("pipe_read = %d; ", cmd->pipe_read);
 	printf("pipe_write = %d; ", cmd->pipe_write);
 	printf("redirect_in = %s; ", cmd->redirect_in);
-	printf("redirect_out = %s\n", cmd->redirect_out);
+	printf("redirect_out = %s; ", cmd->redirect_out);
+	printf("redirect_dblin = %s; ", cmd->redirect_dblin);
+	printf("redirect_dblout = %s\n", cmd->redirect_dblout);
 }

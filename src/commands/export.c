@@ -30,7 +30,6 @@ static void	make_new_env(char ***new_env, t_shell *shell, int j)
 		else if (flg == 1)
 			j = add_var(new_env, shell->cmd->argv[i], j, index);
 	}
-	shell->envp = new_env;
 }
 
 static void	sort_envp(char **env)
@@ -103,4 +102,5 @@ void	ms_cmd_execute_export(t_shell *shell)
 			new_env[i] = NULL;
 	}
 	make_new_env(&new_env, shell, j);
+	shell->envp = new_env;
 }

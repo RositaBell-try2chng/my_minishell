@@ -6,7 +6,7 @@ void	ft_putstr(char *str, int std_var)
 	int	i;
 
 	if (str == NULL)
-		str = "(null)\n";
+		str = "(null)";
 	i = 0;
 	while (str[i])
 		i++;

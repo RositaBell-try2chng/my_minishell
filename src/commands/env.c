@@ -25,7 +25,7 @@ char	**envp_cpy(char **env, t_shell *shell)
 		i++;
 	new_env = malloc(sizeof(char *) * (i + 1));
 	if (!new_env)
-		ft_puterror(shell, 2, "environment\n");
+		ft_puterror(shell, 2, "(environment).\n");
 	shell->env_size = i + 1;
 	new_env[i] = NULL;
 	i = -1;

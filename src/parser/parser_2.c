@@ -59,7 +59,15 @@ static t_tree	*ms_parse_cmd(t_shell *shell)
 	if (node != NULL)
 		return (node);
 	shell->templexer = save;
+	node = ms_parse_cmd_1_dbl(shell);
+	if (node != NULL)
+		return (node);
+	shell->templexer = save;
 	node = ms_parse_cmd_2(shell);
+	if (node != NULL)
+		return (node);
+	shell->templexer = save;
+	node = ms_parse_cmd_2_dbl(shell);
 	if (node != NULL)
 		return (node);
 	shell->templexer = save;

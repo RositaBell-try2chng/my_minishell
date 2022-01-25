@@ -20,7 +20,7 @@
 
 # define OS_VERSION				2 // 1 - MAC, 2 - LINUX
 # define MSH_DEFNAME			"MiniShell"
-# define MS_TEST_REGIME			0 // 1 - Test info, 0 - No test info
+# define MS_TEST_REGIME			1 // 1 - Test info, 0 - No test info
 # define MS_READLINE_REGIME		1 // 1 - ReadLine (history), 2 - GNL (no leaks)
 # define COLOR_GREEN			"\x1b[38;5;118m"
 # define COLOR_RED				"\x1b[38;5;196m"
@@ -30,6 +30,11 @@
 # define LEXER_STATE_DEFAULT	0
 # define LEXER_STATE_DQUOTES	1
 # define LEXER_STATE_QUOTES		2
+# define LEXER_TYPE_DLBIN		301
+# define LEXER_TYPE_DLBOUT		302
+# define LEXER_TYPE_DLBAMP		303
+# define LEXER_TYPE_DLBPIPE		304
+# define LEXER_TYPE_ERROR		404
 # define TREE_PIPE				1
 # define TREE_AMP				2
 # define TREE_SEM				3
@@ -37,6 +42,8 @@
 # define TREE_REDOUT			5
 # define TREE_FILE				6
 # define TREE_ARG				7
+# define TREE_DBLIN				8
+# define TREE_DBLOUT			9
 
 typedef struct s_lexer	t_lexer;
 typedef struct s_tree	t_tree;
@@ -78,6 +85,10 @@ typedef struct s_cmd
 	int			pipe_write;
 	char		*redirect_in;
 	char		*redirect_out;
+	char		*redirect_dblin;
+	char		*redirect_dblout;
+	int			heredoc_fd;
+	char		*heredoc_file;
 }	t_cmd;
 
 typedef struct s_shell
@@ -113,7 +124,7 @@ void	ft_puterror(t_shell *shell, int code, char *name);
 void	ft_puterror_noexit(t_shell *shell, int code);
 void	ft_putexit(t_shell *shell);
 
-// main_utils.c
+// utils.c
 void	ms_shell_starterror(int argc, char **argv);
 t_shell	*ms_shell_init(void);
 void	ms_readline_and_lexerlist(t_shell *shell);
@@ -124,10 +135,11 @@ void	ms_ignore_signals(t_shell *shell);
 void	ms_sigint_in_child(t_shell *shell);
 
 //lexer
-int		ms_lexer_chartype(char c);
+int		ms_lexer_chartype(int last, int c, int next);
 t_lexer	*ms_lexerlist_add(t_shell *shell, int value_length);
 void	ms_lexerlist_build(t_shell *shell);
 void	ms_lexer_parser(t_shell *shell);
+void	ms_lexerlist_corrector(t_shell *shell);
 void	ms_lexerlist_destroy(t_shell *shell);
 
 //parser
@@ -136,17 +148,22 @@ bool	ms_parse_lexertype(t_shell *shell, int lexertype, char **bufptr);
 int		ms_lexerlist_parse(t_shell *shell);
 t_tree	*ms_parse_cmdline(t_shell *shell);
 t_tree	*ms_parse_job(t_shell *shell);
+t_tree	*ms_parse_cmd_1_dbl(t_shell *shell);
+t_tree	*ms_parse_cmd_2_dbl(t_shell *shell);
 t_tree	*ms_parse_simplecmd(t_shell *shell);
 void	ms_parse_node_free(t_tree *node);
 void	ms_parse_tree_destroy(t_shell *shell);
 void	ms_trlist_destroy(t_shell *shell);
 
 //executor
-void	ms_tree_execute_cmd_hlp(t_shell *shell, bool async, bool p_i, bool p_o);
-void	ms_tree_execute_cmd(t_shell *shell, t_tree *node, int p_r, int p_w);
 void	ms_tree_execute(t_shell *shell);
 void	ms_cmd_argv_free(t_cmd *cmd);
+void	ms_tree_execute_cmd(t_shell *shell, t_tree *node, int p_r, int p_w);
+void	ms_tree_execute_cmd_hlp(t_shell *shell, bool async, bool p_i, bool p_o);
 void	ms_cmd_execute_fork(t_shell *shell);
+void	ms_create_heredoc_file(t_shell *shell);
+void	ms_write_heredoc_file_readline(t_shell *shell);
+void	ms_write_heredoc_file_gnl(t_shell *shell, int stop);
 void	ms_cmd_execute_fork_error(void);
 void	ms_cmd_execute_fd_null(t_shell *shell);
 void	ms_cmd_execute_fd_redirect_in(t_shell *shell);

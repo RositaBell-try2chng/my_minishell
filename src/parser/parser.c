@@ -36,7 +36,7 @@ t_tree	*ms_tree_malloc(t_shell *shell)
 
 	node = (t_tree *)malloc(sizeof(t_tree));
 	if (node == NULL)
-		ft_puterror(shell, 2, "(lexer-dereva).\n");
+		ft_puterror(shell, 2, "(lexer-derevo).\n");
 	if (shell->trlist != NULL)
 		ms_trlist_malloc_next(shell, node);
 	if (shell->trlist == NULL)

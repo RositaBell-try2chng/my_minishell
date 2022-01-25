@@ -1,10 +1,13 @@
 #include "minishell.h"
 
-static void	ms_lexer_parser_defualt_separation(t_shell *shell, int c)
+static void	ms_lexer_parser_defualt_separate(t_shell *shell, int c, int dblsep)
 {
 	int	value_length;
 
 	value_length = shell->inputlen - shell->input_i;
+	if (c == -3)
+		shell->templexer->value[shell->lexval_i++] =
+			shell->input[shell->input_i];
 	if (shell->lexval_i > 0)
 	{
 		shell->templexer->value[shell->lexval_i] = '\0';
@@ -12,7 +15,7 @@ static void	ms_lexer_parser_defualt_separation(t_shell *shell, int c)
 		shell->templexer = shell->templexer->next;
 		shell->lexval_i = 0;
 	}
-	if (c != ' ')
+	if (dblsep == 1)
 	{
 		shell->templexer->type = shell->input_c;
 		shell->templexer->value[0] = shell->input_c;
@@ -20,14 +23,14 @@ static void	ms_lexer_parser_defualt_separation(t_shell *shell, int c)
 		shell->templexer->next = ms_lexerlist_add(shell, value_length);
 		shell->templexer = shell->templexer->next;
 	}
+	if (c == -2)
+		shell->templexer->value[shell->lexval_i++] =
+			shell->input[shell->input_i];
 }
 
-static void	ms_lexer_parser_defualt(t_shell *shell)
+static void	ms_lexer_parser_defualt(t_shell *shell, int c)
 {
-	int	c;
-
-	c = shell->input_c;
-	if (c == '\'' || c == '\"' || c == '\\' || c == -1)
+	if (c == '\'' || c == '\"' || c == '\\' || c == -1 || c == -2 || c == -3)
 		shell->templexer->type = -1;
 	if (c == '\'')
 		shell->lexerstate = LEXER_STATE_QUOTES;
@@ -44,9 +47,10 @@ static void	ms_lexer_parser_defualt(t_shell *shell)
 		shell->templexer->value[shell->lexval_i] = shell->input[shell->input_i];
 		shell->lexval_i++;
 	}
-	else if (c == ' ' || c == ';' || c == '>'
-		|| c == '<' || c == '&' || c == '|')
-		ms_lexer_parser_defualt_separation(shell, c);
+	else if (c == ';' || c == '>' || c == '<' || c == '&' || c == '|')
+		ms_lexer_parser_defualt_separate(shell, c, 1);
+	else if (c == ' ' || c == -2 || c == -3)
+		ms_lexer_parser_defualt_separate(shell, c, 0);
 }
 
 static void	ms_lexer_parser_dquotes(t_shell *shell)
@@ -89,9 +93,14 @@ void	ms_lexer_parser(t_shell *shell)
 	shell->templexer = shell->lexerlist;
 	while (shell->input[shell->input_i] != '\0')
 	{
-		shell->input_c = ms_lexer_chartype(shell->input[shell->input_i]);
+		if (shell->input_i == 0)
+			shell->input_c = ms_lexer_chartype(0, shell->input[shell->input_i],
+				shell->input[shell->input_i + 1]);
+		if (shell->input_i > 0)
+			shell->input_c = ms_lexer_chartype(shell->input[shell->input_i - 1],
+				shell->input[shell->input_i], shell->input[shell->input_i + 1]);
 		if (shell->lexerstate == LEXER_STATE_DEFAULT)
-			ms_lexer_parser_defualt(shell);
+			ms_lexer_parser_defualt(shell, shell->input_c);
 		else if (shell->lexerstate == LEXER_STATE_DQUOTES)
 			ms_lexer_parser_dquotes(shell);
 		else if (shell->lexerstate == LEXER_STATE_QUOTES)

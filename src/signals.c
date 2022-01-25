@@ -13,9 +13,12 @@ static void	ms_signal_handler(int sigtype)
 	{
 		if (MS_TEST_REGIME == 0)
 			ft_putstr("\n", 1);
-		rl_on_new_line();
-		rl_replace_line("", 0);
-		rl_redisplay();
+		if (MS_READLINE_REGIME == 1)
+		{
+			rl_on_new_line();
+			rl_replace_line("", 0);
+			rl_redisplay();
+		}
 	}
 }
 

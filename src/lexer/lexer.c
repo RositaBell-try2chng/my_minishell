@@ -1,17 +1,26 @@
 #include "minishell.h"
 
-int	ms_lexer_chartype(char c)
+int	ms_lexer_chartype(int last, int c, int next)
 {
-	if (c == '\'' || c == '\"' || c == '|' || c == '&'
-		|| c == ' ' || c == ';' || c == '\\' || c == '\t'
-		|| c == '\n' || c == '>' || c == '<' || c == '\0')
-	{
+	if (c == '\'' || c == '\"' || c == '\\' || c == ';' 
+		|| c == ' ' || c == '\t' || c == '\n' || c == '\0'
+		|| (c == '>' && last != '>' && next != '>')
+		|| (c == '<' && last != '<' && next != '<')
+		|| (c == '&' && last != '&' && next != '&')
+		|| (c == '|' && last != '|' && next != '|'))
 		return (c);
-	}
+	else if ((c == '>' && last != '>' && next == '>')
+		|| (c == '<' && last != '<' && next == '<')
+		|| (c == '&' && last != '&' && next == '&')
+		|| (c == '|' && last != '|' && next == '|'))
+		return (-2);
+	else if ((c == '>' && last == '>' && next != '>')
+		|| (c == '<' && last == '<' && next != '<')
+		|| (c == '&' && last == '&' && next != '&')
+		|| (c == '|' && last == '|' && next != '|'))
+		return (-3);
 	else
-	{
 		return (-1);
-	}
 }
 
 t_lexer	*ms_lexerlist_add(t_shell *shell, int value_length)
@@ -21,7 +30,7 @@ t_lexer	*ms_lexerlist_add(t_shell *shell, int value_length)
 	lexerlist = (t_lexer *)malloc(sizeof(t_lexer));
 	if (lexerlist == NULL)
 	{
-		ft_puterror(shell, 2, "(t_lexer *).\n");
+		ft_puterror(shell, 2, "(element lexera).\n");
 	}
 	lexerlist->value = (char *)malloc(value_length + 1);
 	if (lexerlist->value == NULL)

@@ -17,7 +17,7 @@ t_shell	*ms_shell_init(void)
 
 	shell = (t_shell *)malloc(sizeof(t_shell));
 	if (shell == NULL)
-		ft_puterror(NULL, 2, "t_shell");
+		ft_puterror(NULL, 2, "(struktura Shell).\n");
 	shell->prompt_name = NULL;
 	shell->prompt_line = NULL;
 	shell->input = NULL;
@@ -40,11 +40,23 @@ t_shell	*ms_shell_init(void)
 	return (shell);
 }
 
-// Считывание командной строки и запуск лексера
-void	ms_readline_and_lexerlist(t_shell *shell)
+// Некоторые начальные параметры и удаление heredoc 
+static void	ms_before_readline(t_shell *shell)
 {
 	shell->output_error = 0;
 	shell->lexercount = 0;
+	if (shell->cmd != NULL && shell->cmd->heredoc_file != NULL)
+	{
+		shell->cmd->heredoc_fd = 0;
+		unlink(shell->cmd->heredoc_file);
+		ft_free((void **)&shell->cmd->heredoc_file);
+	}
+}
+
+// Считывание командной строки и запуск лексера
+void	ms_readline_and_lexerlist(t_shell *shell)
+{
+	ms_before_readline(shell);
 	if (MS_READLINE_REGIME == 1)
 	{
 		shell->input = readline(shell->prompt_line);
@@ -65,6 +77,8 @@ void	ms_readline_and_lexerlist(t_shell *shell)
 			add_history(shell->input);
 		ms_lexerlist_build(shell);
 	}
+	if (shell->lexercount > 0)
+		ms_lexerlist_corrector(shell);
 	ft_free((void **)&shell->input);
 }
 
@@ -89,7 +103,7 @@ void	ms_shell_destroy(t_shell *shell)
 			ms_trlist_destroy(shell);
 		if (shell->cmd != NULL)
 			ft_free((void **)&shell->cmd);
-		ft_arrayfree((void ***)&(shell->envp), shell->env_size);
+		ft_arrayfree((void ***)&shell->envp, shell->env_size);
 		ft_free((void **)&shell);
 		shell = NULL;
 	}

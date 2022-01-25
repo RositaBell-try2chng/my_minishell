@@ -61,11 +61,26 @@ static void	ms_cmd_execute_after_fork(t_shell *shell, pid_t pid)
 	}
 }
 
+static void	ms_write_heredoc_file(t_shell *shell)
+{
+	if (shell->cmd->redirect_dblin && MS_READLINE_REGIME == 1)
+	{
+		ms_write_heredoc_file_readline(shell);
+		shell->cmd->redirect_in = shell->cmd->heredoc_file;
+	}
+	if (shell->cmd->redirect_dblin && MS_READLINE_REGIME == 2)
+	{
+		ms_write_heredoc_file_gnl(shell, 0);
+		shell->cmd->redirect_in = shell->cmd->heredoc_file;
+	}
+}
+
 void	ms_cmd_execute_fork(t_shell *shell)
 {
 	pid_t	pid;
 	int		tempfd_stdout;
 
+	ms_create_heredoc_file(shell);
 	pid = fork();
 	if (pid < 0)
 		return (ms_cmd_execute_fork_error());
@@ -73,12 +88,10 @@ void	ms_cmd_execute_fork(t_shell *shell)
 	{
 		ms_sigint_in_child(shell);
 		tempfd_stdout = dup(1);
-		if (shell->cmd->async == 1)
-			ms_cmd_execute_fd_null(shell);
-		if (shell->cmd->redirect_in)
-			ms_cmd_execute_fd_redirect_in(shell);
-		else if (shell->cmd->redirect_out)
-			ms_cmd_execute_fd_redirect_out(shell);
+		ms_cmd_execute_fd_null(shell);
+		ms_write_heredoc_file(shell);
+		ms_cmd_execute_fd_redirect_in(shell);
+		ms_cmd_execute_fd_redirect_out(shell);
 		if (shell->cmd->stdin_pipe)
 			dup2(shell->cmd->pipe_read, 0);
 		if (shell->cmd->stdout_pipe)
