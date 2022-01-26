@@ -16,7 +16,7 @@ static int	ms_cmd_execute_command(t_shell *shell)
 		ms_cmd_execute_echo(shell);
 	else if (ft_strcmp(shell->cmd->argv[0], "env") == 0)
 		ms_cmd_execute_env(shell);
-	else
+	else if (shell->cmd->argv[0][0])
 		do_shell_command(shell);
 	ms_cmd_argv_free(shell->cmd);
 	ms_shell_destroy(shell);

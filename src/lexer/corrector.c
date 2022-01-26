@@ -58,8 +58,47 @@ static void	ms_lexerlist_corrector_amps_pipes(t_shell *shell)
 	}
 }
 
+static char	*change_value(char *src, char *value)
+{
+	char	*res;
+	size_t	i;
+
+	i = 0;
+	while (src[i] && src[i] != '=')
+		i++;
+	res = ft_strdup(src + i + 1);
+	if (!res)
+	{
+		ft_putstr("Error: not enough memory(change value)\n", 2);
+		return (value);
+	}
+	free(value);
+	return (res);
+}
+
+static void	ms_lexerlist_replace_var(t_shell *shell)
+{
+	t_lexer	*cur;
+	int		j;
+
+	cur = shell->lexerlist;
+	while (cur)
+	{
+		if (cur->value[0] == '$' && cur->value[1])
+		{
+			j = find_variable(shell->envp, (cur->value + 1));
+			if (j < 0)
+				cur->value[0] = '\0';
+			else
+				cur->value = change_value(shell->envp[j], cur->value);
+		}
+		cur = cur->next;
+	}
+}
+
 void	ms_lexerlist_corrector(t_shell *shell)
 {
 	ms_lexerlist_corrector_arrows(shell);
 	ms_lexerlist_corrector_amps_pipes(shell);
+	ms_lexerlist_replace_var(shell);
 }
