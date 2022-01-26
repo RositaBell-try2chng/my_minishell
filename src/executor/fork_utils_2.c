@@ -44,7 +44,7 @@ static char	parse_cmd(char **dst, const char *cmd, char *path)
 		*dst = check_cmd(cmd, size_cmd, path, size_path);
 		if (*dst)
 			return (0);
-		path += size_path + 1;
+		path += size_path + (path[size_path] == ':');
 	}
 	return (1);
 }
@@ -67,6 +67,7 @@ void	do_shell_command(t_shell *shell)
 		ft_putstr("Command doesn't exist(", 2);
 		ft_putstr((shell->cmd->argv)[0], 2);
 		write(2, ").\n", 3);
+		exit(1);
 	}
 	execve(shell->cmd->argv[0], shell->cmd->argv, shell->envp);
 	ft_puterror(shell, 3, "");

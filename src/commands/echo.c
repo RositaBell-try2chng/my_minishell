@@ -45,7 +45,8 @@ void	ms_cmd_execute_echo(t_shell *shell)
 			while ((shell->cmd->argv)[i + flg_n][j])
 				j++;
 			write(1, shell->cmd->argv[i + flg_n], j);
-			write(1, " ", 1);
+			if (i + flg_n + 1 < (size_t)shell->cmd->argc)
+				write(1, " ", 1);
 		}
 		if (!flg_n)
 			write(1, "\n", 1);

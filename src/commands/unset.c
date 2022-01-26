@@ -9,7 +9,7 @@ int	find_variable(char **env, char *s)
 	i = 0;
 	flg = 0;
 	res = 0;
-	while (s[i] != '=' && s[i] != '+' && s[i])
+	while (s[i] && s[i] != '=' && s[i] != '+')
 		i++;
 	while (!flg && env[res])
 	{
