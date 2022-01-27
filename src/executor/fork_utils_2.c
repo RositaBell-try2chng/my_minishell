@@ -27,10 +27,13 @@ static char	*check_cmd(const char *cmd, size_t s_cmd, char *path, size_t s_path)
 
 static char	parse_cmd(char **dst, const char *cmd, char *path)
 {
-	size_t	size_cmd;
-	size_t	size_path;
+	size_t		size_cmd;
+	size_t		size_path;
+	static char	*tmp;
 
 	size_cmd = 0;
+	if (!tmp)
+		tmp = ft_strdup(cmd);
 	while (cmd[size_cmd])
 		size_cmd++;
 	*dst = check_cmd(cmd, size_cmd, path, 0);
@@ -46,6 +49,7 @@ static char	parse_cmd(char **dst, const char *cmd, char *path)
 			return (0);
 		path += size_path + (path[size_path] == ':');
 	}
+	*dst = tmp;
 	return (1);
 }
 
