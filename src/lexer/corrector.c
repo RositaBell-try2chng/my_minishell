@@ -58,15 +58,18 @@ static void	ms_lexerlist_corrector_amps_pipes(t_shell *shell)
 	}
 }
 
-static char	*change_value(char *src, char *value)
+static char	*change_value(char *src, char *value, int flg)
 {
 	char	*res;
 	size_t	i;
 
 	i = 0;
-	while (src[i] && src[i] != '=')
+	while (flg && src[i] && src[i] != '=')
 		i++;
-	res = ft_strdup(src + i + 1);
+	if (flg)
+		res = ft_strdup(src + i + 1);
+	else
+		res = ft_strdup(value + 2);
 	if (!res)
 	{
 		ft_putstr("Error: not enough memory(change value)\n", 2);
@@ -78,21 +81,23 @@ static char	*change_value(char *src, char *value)
 
 static void	ms_lexerlist_replace_var(t_shell *shell)
 {
-	t_lexer	*cur;
+	t_lexer	*c;
 	int		j;
+	int 	flg;
 
-	cur = shell->lexerlist;
-	while (cur)
+	c = shell->lexerlist;
+	while (c)
 	{
-		if (cur->value[0] == '$' && cur->value[1])
+		if (c->value[0] == '$' && c->value[1])
 		{
-			j = find_variable(shell->envp, (cur->value + 1));
-			if (j < 0)
-				cur->value[0] = '\0';
+			flg = !(c->value[1] >= '0' && c->value[1] <= '9');
+			j = find_variable(shell->envp, (c->value + 1));
+			if (j < 0 && flg)
+				c->value[0] = '\0';
 			else
-				cur->value = change_value(shell->envp[j], cur->value);
+				c->value = change_value(shell->envp[j], c->value, flg);
 		}
-		cur = cur->next;
+		c = c->next;
 	}
 }
 
