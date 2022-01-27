@@ -17,7 +17,7 @@ void	ms_cmd_execute_env(t_shell *shell)
 
 char	**envp_cpy(char **env, t_shell *shell)
 {
-	size_t	i;
+	int 	i;
 	char	**new_env;
 
 	i = 0;
@@ -36,4 +36,39 @@ char	**envp_cpy(char **env, t_shell *shell)
 			ft_arrayfree((void ***)(&new_env), i);
 	}
 	return (new_env);
+}
+
+char	**copy_env_for_export(char **env, int size)
+{
+	char	**new;
+	size_t	i;
+
+	i = -1;
+	new = malloc(sizeof(char *) * (size + 1));
+	if (!new)
+		return (NULL);
+	while (env[++i])
+		new[i] = env[i];
+	new[i] = NULL;
+	return (new);
+}
+
+void	ft_print_next(char *s)
+{
+	size_t	i;
+	char	c;
+	size_t	j;
+
+	i = 0;
+	j = 0;
+	c = '"';
+	write(1, "declare -x ", 11);
+	while (s[i] && s[i] != '=')
+		i++;
+	write(1, s, i + 1);
+	write(1, &c, 1);
+	while (s[i + 1 + j])
+		j++;
+	write(1, (s + i + 1), j);
+	write(1, &c, 1);
 }

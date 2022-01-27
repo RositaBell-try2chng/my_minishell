@@ -115,9 +115,6 @@ typedef struct s_shell
 	int			env_size;
 }	t_shell;
 
-//Ruslan :)
-char	**envp_cpy(char **env, t_shell *shell);
-
 //puts.c
 void	ft_putstr(char *str, int std_var);
 void	ft_puterror(t_shell *shell, int code, char *name);
@@ -141,6 +138,7 @@ void	ms_lexerlist_build(t_shell *shell);
 void	ms_lexer_parser(t_shell *shell);
 void	ms_lexerlist_corrector(t_shell *shell);
 void	ms_lexerlist_destroy(t_shell *shell);
+char	**envp_cpy(char **env, t_shell *shell);
 
 //parser
 t_tree	*ms_tree_malloc(t_shell *shell);
@@ -189,6 +187,8 @@ int		find_variable(char **env, char *s);
 int		add_var(char ***new_env, char *s, int j, int index);
 int		app_end_var(char ***new_env, char *s, int j, int index);
 void	delete_if_need(char *s);
+char	**copy_env_for_export(char **env, int size);
+void	ft_print_next(char *s);
 
 //test-info
 void	ms_lexerlist_print(t_shell *shell);
