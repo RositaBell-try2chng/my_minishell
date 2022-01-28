@@ -175,6 +175,7 @@ void	ms_cmd_execute_fd_redirect_in(t_shell *shell);
 void	ms_cmd_execute_fd_redirect_out(t_shell *shell);
 void	ms_cmd_execute_command_error(t_shell *shell, int tempfd_stdout);
 void	do_shell_command(t_shell *shell);
+void	count_status(t_shell *shell, int status);
 
 //commands
 void	ms_cmd_execute_cd(t_shell *shell);

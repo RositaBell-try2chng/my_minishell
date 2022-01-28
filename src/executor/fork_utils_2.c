@@ -75,7 +75,23 @@ void	do_shell_command(t_shell *shell)
 	}
 	execve(shell->cmd->argv[0], shell->cmd->argv, shell->envp);
 	ft_puterror(shell, 3, "");
-	ms_cmd_argv_free(shell->cmd);
-	ms_shell_destroy(shell);
-	exit(1);
+}
+
+void	count_status(t_shell *shell, int status)
+{
+	int	exit_res;
+	int	term;
+	int	stop;
+
+	exit_res = WIFEXITED(status);
+	if (exit_res)
+		shell->status = WEXITSTATUS(status);
+	else
+		term = WIFSIGNALED(status);
+	if (!exit_res && term)
+		shell->status = WTERMSIG(status) + 128;
+	else
+		stop = WIFSTOPPED(status);
+	if (!exit_res && !term && stop)
+		shell->status = WSTOPSIG(status);
 }

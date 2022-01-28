@@ -43,9 +43,12 @@ static void	ms_execute_zombie_handler(int signum)
 static void	ms_cmd_execute_after_fork(t_shell *shell, pid_t pid)
 {
 	struct sigaction	act;
-
+	int					status;
 	if (shell->cmd->async == 0)
-		waitpid(pid, &(shell->status), 0);
+	{
+		waitpid(pid, &status, 0);
+		count_status(shell, status);
+	}
 	else if (shell->cmd->async == 1)
 	{
 		printf("Process %d started\n", pid);
@@ -81,6 +84,7 @@ void	ms_cmd_execute_fork(t_shell *shell)
 	int		tempfd_stdout;
 
 	ms_create_heredoc_file(shell);
+	shell->status = 0;
 	pid = fork();
 	if (pid < 0)
 		return (ms_cmd_execute_fork_error());
