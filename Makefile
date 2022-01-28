@@ -17,7 +17,7 @@ HEAD_L	=	./libft/libft.h
 NAME	=	minishell
 SRCS	=	main.c utils.c signals.c puts.c prints.c \
 			lexer/lexer.c lexer/parser.c lexer/corrector.c lexer/destroy.c \
-			parser/parser.c parser/parser_1.c parser/parser_2.c parser/parser_3.c parser/parser_dbl.c parser/destroy.c \
+			parser/parser.c parser/parser_1.c parser/parser_2.c parser/parser_3.c parser/parser_4.c parser/destroy.c \
 			executor/executor_1.c executor/executor_2.c executor/executor_3.c executor/fork.c executor/heredoc.c executor/fork_utils.c executor/fork_utils_2.c \
 			commands/cd.c \
 			commands/prompt.c \

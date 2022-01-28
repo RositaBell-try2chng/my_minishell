@@ -1,14 +1,13 @@
 #include "minishell.h"
 
-static void	ms_tree_execute_args(t_shell *shell, t_tree *node,
-	t_tree *temp, int i)
+void	ms_tree_execute_args(t_shell *shell, t_tree *node, t_tree *temp, int i)
 {
-	if (node == NULL || node->type != TREE_FILE)
+	if (node == NULL || node->type != TREE_CMD)
 	{
 		shell->cmd->argc = 0;
 		return ;
 	}
-	while (temp != NULL && (temp->type == TREE_ARG || temp->type == TREE_FILE))
+	while (temp != NULL && (temp->type == TREE_ARG || temp->type == TREE_CMD))
 	{
 		temp = temp->right;
 		i++;
@@ -18,7 +17,7 @@ static void	ms_tree_execute_args(t_shell *shell, t_tree *node,
 		ft_puterror(shell, 2, "(massiv cmd->argv).\n");
 	temp = node;
 	i = 0;
-	while (temp != NULL && (temp->type == TREE_ARG || temp->type == TREE_FILE))
+	while (temp != NULL && (temp->type == TREE_ARG || temp->type == TREE_CMD))
 	{
 		shell->cmd->argv[i] = temp->value;
 		temp = temp->right;
@@ -28,7 +27,7 @@ static void	ms_tree_execute_args(t_shell *shell, t_tree *node,
 	shell->cmd->argc = i;
 }
 
-static void	ms_cmd_execute(t_shell *shell)
+void	ms_cmd_execute(t_shell *shell)
 {
 	if (ft_strcmp(shell->cmd->argv[0], "cd") == 0 && shell->cmd->async == 0)
 		return (ms_cmd_execute_cd(shell));
@@ -57,6 +56,12 @@ static void	ms_tree_execute_simplecmd(t_shell *shell, t_tree *node,
 	shell->cmd->redirect_dblout = NULL;
 	shell->cmd->heredoc_fd = -1;
 	shell->cmd->heredoc_file = NULL;
+	if (node != NULL && (node->type == TREE_REDIN || node->type == TREE_REDOUT
+		|| node->type == TREE_DBLIN || node->type == TREE_DBLOUT))
+	{
+		ms_tree_execute_nextarrow(shell, node);
+		return ;
+	}
 	ms_tree_execute_args(shell, node, node, 0);
 	if (MS_TEST_REGIME == 1)
 		ms_cmd_print(shell->cmd);
@@ -74,6 +79,12 @@ static void	ms_tree_execute_simplecmd_dbl(t_shell *shell, t_tree *node,
 	shell->cmd->redirect_dblout = redirect_dblout;
 	shell->cmd->heredoc_fd = -1;
 	shell->cmd->heredoc_file = NULL;
+	if (node != NULL && (node->type == TREE_REDIN || node->type == TREE_REDOUT
+		|| node->type == TREE_DBLIN || node->type == TREE_DBLOUT))
+	{
+		ms_tree_execute_nextarrow(shell, node);
+		return ;
+	}
 	ms_tree_execute_args(shell, node, node, 0);
 	if (MS_TEST_REGIME == 1)
 		ms_cmd_print(shell->cmd);
@@ -96,6 +107,6 @@ void	ms_tree_execute_cmd(t_shell *shell, t_tree *node, int p_r, int p_w)
 		ms_tree_execute_simplecmd_dbl(shell, node->right, node->value, NULL);
 	if (node->type == TREE_DBLOUT)
 		ms_tree_execute_simplecmd_dbl(shell, node->right, NULL, node->value);
-	if (node->type == TREE_FILE)
+	if (node->type == TREE_CMD)
 		ms_tree_execute_simplecmd(shell, node, NULL, NULL);
 }

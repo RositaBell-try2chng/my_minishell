@@ -52,8 +52,7 @@ void	ms_cmd_execute_fd_redirect_out(t_shell *shell)
 {
 	int	fd;
 
-	if (shell->cmd->redirect_in == NULL
-		&& (shell->cmd->redirect_out || shell->cmd->redirect_dblout))
+	if (shell->cmd->redirect_out || shell->cmd->redirect_dblout)
 	{
 		if (shell->cmd->redirect_out)
 			fd = open(shell->cmd->redirect_out,
@@ -65,7 +64,10 @@ void	ms_cmd_execute_fd_redirect_out(t_shell *shell)
 		{
 			ft_putstr(COLOR_RED, 2);
 			ft_putstr("Error with ", 2);
-			perror(shell->cmd->redirect_out);
+			if (shell->cmd->redirect_out)
+				perror(shell->cmd->redirect_out);
+			if (shell->cmd->redirect_dblout)
+				perror(shell->cmd->redirect_dblout);
 			ft_putstr(COLOR_RESET, 2);
 			ms_cmd_argv_free(shell->cmd);
 			ms_shell_destroy(shell);

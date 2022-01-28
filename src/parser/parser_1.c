@@ -1,9 +1,9 @@
 #include "minishell.h"
 
-static t_tree	*ms_parse_cmdline_1(t_shell *shell);
-static t_tree	*ms_parse_cmdline_2(t_shell *shell);
-static t_tree	*ms_parse_cmdline_3(t_shell *shell);
-static t_tree	*ms_parse_cmdline_4(t_shell *shell);
+static t_tree	*ms_parse_cmdline_sem_before(t_shell *shell);
+static t_tree	*ms_parse_cmdline_sem_after(t_shell *shell);
+static t_tree	*ms_parse_cmdline_amp_before(t_shell *shell);
+static t_tree	*ms_parse_cmdline_amp_after(t_shell *shell);
 
 t_tree	*ms_parse_cmdline(t_shell *shell)
 {
@@ -11,122 +11,128 @@ t_tree	*ms_parse_cmdline(t_shell *shell)
 	t_tree	*node;
 
 	save = shell->templexer;
-	node = ms_parse_cmdline_1(shell);
+	
+	node = ms_parse_cmdline_sem_before(shell);
 	if (node != NULL)
 		return (node);
 	shell->templexer = save;
-	node = ms_parse_cmdline_2(shell);
+	
+	node = ms_parse_cmdline_sem_after(shell);
 	if (node != NULL)
 		return (node);
 	shell->templexer = save;
-	node = ms_parse_cmdline_3(shell);
+	
+	node = ms_parse_cmdline_amp_before(shell);
 	if (node != NULL)
 		return (node);
 	shell->templexer = save;
-	node = ms_parse_cmdline_4(shell);
+	
+	node = ms_parse_cmdline_amp_after(shell);
 	if (node != NULL)
 		return (node);
 	shell->templexer = save;
-	node = ms_parse_job(shell);
+	
+	node = ms_parse_cmdline_pipe(shell);
 	if (node != NULL)
 		return (node);
+	
 	return (NULL);
 }
 
-static t_tree	*ms_parse_cmdline_1(t_shell *shell)
+static t_tree	*ms_parse_cmdline_sem_before(t_shell *shell)
 {
-	t_tree	*job_node;
+	t_tree	*pipe_node;
 	t_tree	*cmd_node;
 	t_tree	*result;
 
-	job_node = ms_parse_job(shell);
-	if (job_node == NULL)
+	pipe_node = ms_parse_cmdline_pipe(shell);
+	if (pipe_node == NULL)
 		return (NULL);
 	if (!ms_parse_lexertype(shell, ';', NULL))
 	{
-		ms_parse_node_free(job_node);
+		ms_parse_node_free(pipe_node);
 		return (NULL);
 	}
 	cmd_node = ms_parse_cmdline(shell);
 	if (cmd_node == NULL)
 	{
-		ms_parse_node_free(job_node);
+		ms_parse_node_free(pipe_node);
 		return (NULL);
 	}
 	result = ms_tree_malloc(shell);
 	result->type = TREE_SEM;
 	result->value = NULL;
-	result->left = job_node;
+	result->left = pipe_node;
 	result->right = cmd_node;
 	return (result);
 }
 
-static t_tree	*ms_parse_cmdline_2(t_shell *shell)
+static t_tree	*ms_parse_cmdline_sem_after(t_shell *shell)
 {
-	t_tree	*job_node;
+	t_tree	*pipe_node;
 	t_tree	*result;
 
-	job_node = ms_parse_job(shell);
-	if (job_node == NULL)
+	pipe_node = ms_parse_cmdline_pipe(shell);
+	if (pipe_node == NULL)
 		return (NULL);
 	if (!ms_parse_lexertype(shell, ';', NULL))
 	{
-		ms_parse_node_free(job_node);
+		ms_parse_node_free(pipe_node);
 		return (NULL);
 	}
 	result = ms_tree_malloc(shell);
 	result->type = TREE_SEM;
 	result->value = NULL;
-	result->left = job_node;
+	result->left = pipe_node;
 	result->right = NULL;
 	return (result);
 }
 
-static t_tree	*ms_parse_cmdline_3(t_shell *shell)
+static t_tree	*ms_parse_cmdline_amp_before(t_shell *shell)
 {
-	t_tree	*job_node;
+	t_tree	*pipe_node;
 	t_tree	*cmd_node;
 	t_tree	*result;
 
-	job_node = ms_parse_job(shell);
-	if (job_node == NULL)
+	pipe_node = ms_parse_cmdline_pipe(shell);
+	if (pipe_node == NULL)
 		return (NULL);
 	if (!ms_parse_lexertype(shell, '&', NULL))
 	{
-		ms_parse_node_free(job_node);
+		ms_parse_node_free(pipe_node);
 		return (NULL);
 	}
 	cmd_node = ms_parse_cmdline(shell);
 	if (cmd_node == NULL)
 	{
-		ms_parse_node_free(job_node);
+		ms_parse_node_free(pipe_node);
 		return (NULL);
 	}
 	result = ms_tree_malloc(shell);
 	result->type = TREE_AMP;
 	result->value = NULL;
-	result->left = job_node;
+	result->left = pipe_node;
 	result->right = cmd_node;
 	return (result);
 }
 
-static t_tree	*ms_parse_cmdline_4(t_shell *shell)
+static t_tree	*ms_parse_cmdline_amp_after(t_shell *shell)
 {
-	t_tree	*job_node;
+	t_tree	*pipe_node;
 	t_tree	*result;
 
-	job_node = ms_parse_job(shell);
-	if (job_node == NULL)
+	pipe_node = ms_parse_cmdline_pipe(shell);
+	if (pipe_node == NULL)
 		return (NULL);
 	if (!ms_parse_lexertype(shell, '&', NULL))
 	{
-		ms_parse_node_free(job_node);
+		ms_parse_node_free(pipe_node);
 		return (NULL);
 	}
 	result = ms_tree_malloc(shell);
 	result->type = TREE_AMP;
 	result->value = NULL;
-	result->left = job_node;
+	result->left = pipe_node;
 	result->right = NULL;
 	return (result);
 }

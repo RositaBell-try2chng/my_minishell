@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-static void	ms_tree_execute_pipeline(t_shell *shell, t_tree *node,
+static void	ms_tree_execute_pipe(t_shell *shell, t_tree *node,
 	t_tree *node_right, bool async)
 {
 	int		fd[4];
@@ -28,13 +28,13 @@ static void	ms_tree_execute_pipeline(t_shell *shell, t_tree *node,
 	close(fd[2]);
 }
 
-static void	ms_tree_execute_job(t_shell *shell, t_tree *node, bool async)
+static void	ms_tree_execute_left(t_shell *shell, t_tree *node, bool async)
 {
 	if (node == NULL)
 		return ;
 	if (node->type == TREE_PIPE)
 	{
-		ms_tree_execute_pipeline(shell, node, node->right, async);
+		ms_tree_execute_pipe(shell, node, node->right, async);
 	}
 	else
 	{
@@ -53,16 +53,16 @@ static void	ms_tree_execute_cmdline(t_shell *shell, t_tree *tree)
 		ft_puterror(shell, 2, "(struktura CMD).\n");
 	if (tree->type == TREE_SEM)
 	{
-		ms_tree_execute_job(shell, tree->left, false);
+		ms_tree_execute_left(shell, tree->left, false);
 		ms_tree_execute_cmdline(shell, tree->right);
 	}
 	else if (tree->type == TREE_AMP)
 	{
-		ms_tree_execute_job(shell, tree->left, true);
+		ms_tree_execute_left(shell, tree->left, true);
 		ms_tree_execute_cmdline(shell, tree->right);
 	}
 	else
-		ms_tree_execute_job(shell, tree, false);
+		ms_tree_execute_left(shell, tree, false);
 }
 
 void	ms_tree_execute(t_shell *shell)

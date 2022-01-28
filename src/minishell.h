@@ -35,15 +35,15 @@
 # define LEXER_TYPE_DLBAMP		303
 # define LEXER_TYPE_DLBPIPE		304
 # define LEXER_TYPE_ERROR		404
-# define TREE_PIPE				1
+# define TREE_SEM				1
 # define TREE_AMP				2
-# define TREE_SEM				3
+# define TREE_PIPE				3
 # define TREE_REDIN				4
-# define TREE_REDOUT			5
-# define TREE_FILE				6
-# define TREE_ARG				7
-# define TREE_DBLIN				8
-# define TREE_DBLOUT			9
+# define TREE_DBLIN				5
+# define TREE_REDOUT			6
+# define TREE_DBLOUT			7
+# define TREE_CMD				8
+# define TREE_ARG				9
 
 typedef struct s_lexer	t_lexer;
 typedef struct s_tree	t_tree;
@@ -145,10 +145,10 @@ t_tree	*ms_tree_malloc(t_shell *shell);
 bool	ms_parse_lexertype(t_shell *shell, int lexertype, char **bufptr);
 int		ms_lexerlist_parse(t_shell *shell);
 t_tree	*ms_parse_cmdline(t_shell *shell);
-t_tree	*ms_parse_job(t_shell *shell);
-t_tree	*ms_parse_cmd_1_dbl(t_shell *shell);
-t_tree	*ms_parse_cmd_2_dbl(t_shell *shell);
-t_tree	*ms_parse_simplecmd(t_shell *shell);
+t_tree	*ms_parse_cmdline_pipe(t_shell *shell);
+t_tree	*ms_parse_cmd(t_shell *shell);
+t_tree	*ms_parse_cmdname(t_shell *shell);
+t_tree	*ms_parse_cmd_nextarrow(t_shell *shell, t_tree *file_node);
 void	ms_parse_node_free(t_tree *node);
 void	ms_parse_tree_destroy(t_shell *shell);
 void	ms_trlist_destroy(t_shell *shell);
@@ -158,6 +158,9 @@ void	ms_tree_execute(t_shell *shell);
 void	ms_cmd_argv_free(t_cmd *cmd);
 void	ms_tree_execute_cmd(t_shell *shell, t_tree *node, int p_r, int p_w);
 void	ms_tree_execute_cmd_hlp(t_shell *shell, bool async, bool p_i, bool p_o);
+void	ms_tree_execute_nextarrow(t_shell *shell, t_tree *node);
+void	ms_tree_execute_args(t_shell *shell, t_tree *node, t_tree *temp, int i);
+void	ms_cmd_execute(t_shell *shell);
 void	ms_cmd_execute_fork(t_shell *shell);
 void	ms_create_heredoc_file(t_shell *shell);
 void	ms_write_heredoc_file_readline(t_shell *shell);
