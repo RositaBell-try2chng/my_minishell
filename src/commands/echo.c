@@ -1,34 +1,5 @@
 #include "minishell.h"
 
-/*static void	print_variable(char *s, char **env)
-{
-	size_t	i;
-	size_t	j;
-	char	flg;
-
-	s++;
-	i = 0;
-	flg = 0;
-	while (s[i])
-		i++;
-	while (!flg && *env)
-	{
-		while (*env && ft_strncmp(s, *env, i))
-			env++;
-		if (*env && (*env)[i + 1] == '=')
-			flg = 1;
-		else if (*env)
-			env++;
-	}
-	if (!(*env))
-		return;
-	j = 0;
-	while ((*env)[i + j + 1])
-		j++;
-	write(1, (*env + i + 1), j);
-}*/ //$variable будет обрабатываться в лексере и сюда скорее всего уже
-// попадать не будет.
-
 void	ms_cmd_execute_echo(t_shell *shell)
 {
 		size_t	flg_n;

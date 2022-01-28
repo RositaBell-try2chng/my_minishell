@@ -25,5 +25,6 @@ int		ft_gnl(int fd, char **line);
 int		ft_miniglob(char *pathpattern, char ***files);
 void	ft_arrayfree(void ***array, size_t count);
 void	ft_free(void **pointer);
+char	*ft_itoa(int n);
 
 #endif

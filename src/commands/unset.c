@@ -42,6 +42,7 @@ void	ms_cmd_execute_unset(t_shell *shell)
 	int	i;
 	int j;
 
+	shell->status = 0;
 	i = 0;
 	while (++i < shell->cmd->argc)
 	{

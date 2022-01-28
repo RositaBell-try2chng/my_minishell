@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-int	check_correct_var(char *s, char flg)
+int	check_correct_var(t_shell *shell, char *s, char flg)
 {
 	size_t	i;
 	char	flg_correct;
@@ -20,6 +20,7 @@ int	check_correct_var(char *s, char flg)
 		write(2, "variable incorrect - ", 21);
 		ft_putstr(s, 2);
 		write(2, "\n", 1);
+		shell->status = 1;
 	}
 	return (0);
 }
@@ -50,7 +51,8 @@ int	count_correct_var(t_shell *shell, char **argv, int argc)
 	i = -1;
 	while (++i < argc)
 	{
-		if (check_correct_var(argv[i], 1) && no_var(shell->envp, argv[i]))
+		if (check_correct_var(shell, argv[i], 1) \
+		&& no_var(shell->envp, argv[i]))
 			res++;
 	}
 	return (res);

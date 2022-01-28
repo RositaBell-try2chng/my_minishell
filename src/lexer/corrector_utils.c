@@ -44,7 +44,7 @@ int	ft_str_real_len(char *s, t_shell *shell)
 			res += count_var_len(s + i + 1, &i, shell);
 		}
 		else if (s[i] == '$' && s[i + 1] == '?')
-			counts(&res, &i, shell->status, &flg);
+			counts(&res, &i, shell->st, &flg);
 		else if (s[i] == '$' && s[i + 1] > 47 && s[i + 1] < 58)
 			counts(&res, &i, "", &flg);
 		else
@@ -79,8 +79,8 @@ size_t	copy_var(char *dst, char *src, t_shell *shell, size_t *i_dst)
 	k = 0;
 	if ((t_shell *)src == shell)
 	{
-		while (shell->status[++i])
-			dst[i] = shell->status[i];
+		while (shell->st[++i])
+			dst[i] = shell->st[i];
 		*i_dst = *i_dst + i;
 		return (2);
 	}

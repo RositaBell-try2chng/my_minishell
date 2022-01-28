@@ -16,6 +16,7 @@ void	ft_putstr(char *str, int std_var)
 //Вывод ошибок с выходом из программы
 void	ft_puterror(t_shell *shell, int code, char *name)
 {
+	shell->status = 3;
 	ft_putstr(COLOR_RED, 2);
 	ft_putstr("Error: ", 2);
 	if (code == 1)

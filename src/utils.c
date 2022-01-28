@@ -104,6 +104,7 @@ void	ms_shell_destroy(t_shell *shell)
 		if (shell->cmd != NULL)
 			ft_free((void **)&shell->cmd);
 		ft_arrayfree((void ***)&shell->envp, shell->env_size);
+		ft_free((void **)&shell->st);
 		ft_free((void **)&shell);
 		shell = NULL;
 	}

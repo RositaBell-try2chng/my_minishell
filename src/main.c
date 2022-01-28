@@ -7,7 +7,8 @@ int	main(int argc, char **argv, char **envp)
 	ms_shell_starterror(argc, argv);
 	shell = ms_shell_init();
 	shell->envp = envp_cpy(envp, shell);
-	shell->status = "dollar_vopros";
+	shell->status = 0;
+	shell->st = ft_itoa(shell->status);
 	while (1)
 	{
 		ms_readline_and_lexerlist(shell);

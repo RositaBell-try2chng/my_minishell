@@ -22,7 +22,7 @@ static void	make_new_env(char ***new_env, t_shell *shell, int j)
 	i = 0;
 	while (++i < shell->cmd->argc)
 	{
-		flg = check_correct_var(shell->cmd->argv[i], 0);
+		flg = check_correct_var(shell, shell->cmd->argv[i], 0);
 		if (flg)
 			index = find_variable(*new_env, shell->cmd->argv[i]);
 		if (flg == 2)
@@ -59,7 +59,7 @@ static void	sort_envp(char **env)
 	}
 }
 
-static void	export_no_arg(char **env, int size)
+static void	export_no_arg(t_shell *shell, char **env, int size)
 {
 	size_t	i;
 	char	**new;
@@ -67,7 +67,10 @@ static void	export_no_arg(char **env, int size)
 	i = -1;
 	new = copy_env_for_export(env, size);
 	if (!new)
+	{
+		shell->status = 2;
 		return (ft_putstr("Error: not enough memory for export\n", 2));
+	}
 	sort_envp(new);
 	while (new[++i] && new[i][0] != '_')
 	{
@@ -84,9 +87,10 @@ void	ms_cmd_execute_export(t_shell *shell)
 	char	**new_env;
 	int		i;
 
+	shell->status = 0;
 	j = 0;
 	if (shell->cmd->argc == 1)
-		return (export_no_arg(shell->envp, shell->env_size));
+		return (export_no_arg(shell, shell->envp, shell->env_size));
 	while ((shell->envp)[j])
 		j++;
 	cnt = count_correct_var(shell, shell->cmd->argv + 1, shell->cmd->argc - 1);

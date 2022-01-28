@@ -45,8 +45,8 @@ static void	ms_cmd_execute_after_fork(t_shell *shell, pid_t pid)
 	struct sigaction	act;
 
 	if (shell->cmd->async == 0)
-		waitpid(pid, NULL, 0);
-	if (shell->cmd->async == 1)
+		waitpid(pid, &(shell->status), 0);
+	else if (shell->cmd->async == 1)
 	{
 		printf("Process %d started\n", pid);
 		act.sa_flags = 0;
