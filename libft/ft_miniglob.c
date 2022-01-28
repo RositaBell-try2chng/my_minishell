@@ -1,9 +1,11 @@
 #include "libft.h"
 
-static void	*ft_mg_pathjoin(void *dst, const void *src)
+static void	*ft_mg_pathjoin(void *dst, const void *src, int if_slash)
 {
-	dst = ft_memjoin(dst, "/");
-	dst = ft_memjoin(dst, src);
+	if (src != NULL)
+		dst = ft_memjoin(dst, src);
+	if (if_slash == 1)
+		dst = ft_memjoin(dst, "/");
 	return (dst);
 }
 
@@ -73,7 +75,7 @@ static int	ft_mg_scandir(char *scandir, char *filepattern,
 		if (ft_mg_compare(filepattern, file->d_name) == 1)
 		{
 			ft_strcpy((char *)files_names[files_count], scandir);
-			ft_mg_pathjoin((char *)files_names[files_count++], file->d_name);
+			ft_mg_pathjoin((char *)files_names[files_count++], file->d_name, 0);
 		}
 	}
 	closedir(dir);
@@ -83,7 +85,7 @@ static int	ft_mg_scandir(char *scandir, char *filepattern,
 	return (files_count);
 }
 
-int	ft_miniglob(char *pathpattern, char ***files)
+int	ft_miniglob(char *pattern, char ***files)
 {
 	char	scandir[1000];
 	char	filepattern[250];
@@ -92,20 +94,18 @@ int	ft_miniglob(char *pathpattern, char ***files)
 	int		i;
 
 	*files = NULL;
-	if (ft_strlen(pathpattern) == 0
-		|| pathpattern[ft_strlen(pathpattern) - 1] == '/')
+	if (ft_strlen(pattern) == 0 || pattern[ft_strlen(pattern) - 1] == '/')
 		return (0);
-	filepattern_count = ft_split_count(pathpattern, '/');
-	filepattern_array = ft_split(pathpattern, '/');
+	filepattern_count = ft_split_count(pattern, '/');
+	filepattern_array = ft_split(pattern, '/');
 	if (filepattern_array == NULL)
 		return (-1);
-	if (pathpattern[0] == '/')
-		scandir[0] = '\0';
-	if (pathpattern[0] != '/')
-		getcwd(scandir, 999);
-	i = -1;
-	while (++i < filepattern_count - 1)
-		ft_mg_pathjoin(scandir, filepattern_array[i]);
+	scandir[0] = '\0';
+	if (pattern[0] == '/')
+		ft_mg_pathjoin(scandir, NULL, 1);
+	i = 0;
+	while (i < filepattern_count - 1)
+		ft_mg_pathjoin(scandir, filepattern_array[i++], 1);
 	ft_strcpy(filepattern, filepattern_array[filepattern_count - 1]);
 	ft_arrayfree((void ***)&filepattern_array, filepattern_count);
 	return (ft_mg_scandir(scandir, filepattern, files, 0));

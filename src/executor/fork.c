@@ -44,6 +44,7 @@ static void	ms_cmd_execute_after_fork(t_shell *shell, pid_t pid)
 {
 	struct sigaction	act;
 	int					status;
+
 	if (shell->cmd->async == 0)
 	{
 		waitpid(pid, &status, 0);

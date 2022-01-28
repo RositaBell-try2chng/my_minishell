@@ -53,7 +53,6 @@ static char	parse_cmd(char **dst, const char *cmd, char *path)
 	return (1);
 }
 
-
 void	do_shell_command(t_shell *shell)
 {
 	size_t	i;
