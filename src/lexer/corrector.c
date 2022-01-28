@@ -58,44 +58,51 @@ static void	ms_lexerlist_corrector_amps_pipes(t_shell *shell)
 	}
 }
 
-static char	*change_value(char *src, char *value, int flg)
+static void	ms_replace_variable(char *dst, char *src, t_shell *shell)
 {
-	char	*res;
-	size_t	i;
+	size_t	i_ds;
+	size_t	i_sr;
 
-	i = 0;
-	while (flg && src[i] && src[i] != '=')
-		i++;
-	if (flg)
-		res = ft_strdup(src + i + 1);
-	else
-		res = ft_strdup(value + 2);
-	if (!res)
+	i_sr = 0;
+	i_ds = 0;
+	while (src[i_sr])
 	{
-		ft_putstr("Error: not enough memory(change value)\n", 2);
-		return (value);
+		if (src[i_sr] == '$' && ft_isalpha(src[i_sr + 1]))
+			i_sr += copy_var(dst + i_ds, src + i_sr + 1, shell, &i_ds) + 1;
+		else if (src[i_sr] == '$' && src[i_sr + 1] == '?')
+			i_sr += copy_var(dst + i_ds, (char *)shell, shell, &i_ds);
+		else if (src[i_sr] == '$' && src[i_sr + 1] > 47 && src[i_sr + 1] < 58)
+			i_sr += 2;
+		else
+			dst[i_ds++] = src[i_sr++];
 	}
-	free(value);
-	return (res);
+	dst[i_ds] = 0;
 }
 
 static void	ms_lexerlist_replace_var(t_shell *shell)
 {
 	t_lexer	*c;
-	int		j;
-	int 	flg;
+	char	*tmp;
+	int 	flg_dollar;
 
 	c = shell->lexerlist;
 	while (c)
 	{
-		if (c->value[0] == '$' && c->value[1])
+		flg_dollar = ft_str_real_len(c->value, shell);
+		if (flg_dollar > 0)
 		{
-			flg = !(c->value[1] >= '0' && c->value[1] <= '9');
-			j = find_variable(shell->envp, (c->value + 1));
-			if (j < 0 && flg)
-				c->value[0] = '\0';
+			tmp = c->value;
+			c->value = malloc(sizeof(char) * (flg_dollar + 1));
+			if (!c->value)
+			{
+				c->value = tmp;
+				ft_putstr("Not enough memory\n", 2);
+			}
 			else
-				c->value = change_value(shell->envp[j], c->value, flg);
+			{
+				ms_replace_variable(c->value, tmp, shell);
+				free(tmp);
+			}
 		}
 		c = c->next;
 	}
