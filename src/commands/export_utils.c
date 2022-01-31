@@ -62,7 +62,7 @@ int	add_var(char ***new_env, char *s, int j, int index)
 {
 	char	*tmp;
 
-	if (index > 0)
+	if (index >= 0)
 	{
 		tmp = (*new_env)[index];
 		(*new_env)[index] = ft_strdup(s);

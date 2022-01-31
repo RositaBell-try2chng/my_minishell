@@ -9,13 +9,13 @@ static int	count_var_len(char *s, int *i, t_shell *shell)
 	while (s[k] && s[k] != '$')
 		k++;
 	j = -1;
-	while (++j < shell->env_size)
+	while (++j < shell->env_size - 1)
 	{
 		if (!ft_strncmp(shell->envp[j], s, k) && shell->envp[j][k] == '=')
 			break ;
 	}
 	*i = *i + k;
-	if (j < shell->env_size)
+	if (j < shell->env_size - 1)
 		return (ft_strlen(shell->envp[j] + k) - k - 1);
 	return (0);
 }
@@ -61,7 +61,7 @@ static int count_offset_dst(char *dst, int j, t_shell *shell, char *s)
 	int res;
 
 	res = 0;
-	if (j == shell->env_size)
+	if (j == shell->env_size - 1)
 		return (res);
 	res = ft_strlen(s);
 	ft_memcpy((void *)dst, (void *)s, res);
@@ -86,7 +86,7 @@ size_t	copy_var(char *dst, char *src, t_shell *shell, size_t *i_dst)
 	}
 	while (src[k] && src[k] != '$')
 		k++;
-	while (++j < shell->env_size)
+	while (++j < shell->env_size - 1)
 	{
 		if (!ft_strncmp(shell->envp[j], src, k) && shell->envp[j][k] == '=')
 			break ;
