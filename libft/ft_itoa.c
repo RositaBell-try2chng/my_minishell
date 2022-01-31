@@ -4,7 +4,7 @@ static size_t	find_cnt(int n)
 {
 	size_t	i;
 
-	i = (n < 0);
+	i = (n <= 0);
 	while (n != 0)
 	{
 		n /= 10;
