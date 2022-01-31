@@ -48,7 +48,10 @@ void	ms_cmd_execute_unset(t_shell *shell)
 	{
 		j = find_variable(shell->envp, (shell->cmd->argv)[i]);
 		if (j > 0)
+		{
 			delete_variable(shell->envp + j);
+			shell->env_size--;
+		}
 	}
 }
 

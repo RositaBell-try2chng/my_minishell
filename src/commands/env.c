@@ -12,6 +12,8 @@ void	ms_cmd_execute_env(t_shell *shell)
 		ft_putstr(env[i], 1);
 		write(1, "\n", 1);
 	}
+	ms_cmd_argv_free(shell->cmd);
+	ms_shell_destroy(shell);
 	exit(0);
 }
 
