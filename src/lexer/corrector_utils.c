@@ -16,7 +16,7 @@ static int	count_var_len(char *s, int *i, t_shell *shell)
 	}
 	*i = *i + k;
 	if (j < shell->env_size - 1)
-		return (ft_strlen(shell->envp[j] + k) - k - 1);
+		return (ft_strlen(shell->envp[j] + k + 1));
 	return (0);
 }
 

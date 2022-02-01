@@ -17,7 +17,7 @@ int	check_correct_var(t_shell *shell, char *s, char flg)
 		return (1);
 	if ((s[i] || !flg_correct) && flg)
 	{
-		write(2, "variable incorrect - ", 21);
+		ft_putstr("variable incorrect - ", 2);
 		ft_putstr(s, 2);
 		write(2, "\n", 1);
 		shell->status = 1;

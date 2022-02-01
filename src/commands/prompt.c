@@ -57,16 +57,12 @@ void	ms_cmd_execute_prompt(t_shell *shell)
 	if (shell->cmd->argc == 1)
 	{
 		shell->status = 1;
-		ft_putstr(COLOR_RED, 2);
 		ft_putstr("prompt: neobhodimo ukazat text novogo privetstviya\n", 2);
-		ft_putstr(COLOR_RESET, 2);
 	}
 	else if (shell->cmd->argc > 2)
 	{
 		shell->status = 2;
-		ft_putstr(COLOR_RED, 2);
 		ft_putstr("Prompt: neobhodimo ukazat tolko odin parametr\n", 2);
-		ft_putstr(COLOR_RESET, 2);
 	}
 	else
 	{
