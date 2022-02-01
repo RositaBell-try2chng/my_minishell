@@ -45,9 +45,10 @@ static void	ms_cmd_execute_after_fork(t_shell *shell, pid_t pid)
 	struct sigaction	act;
 	int					status;
 
+	ms_signals_handler(shell, 2, pid);
 	if (shell->cmd->async == 0)
 	{
-		waitpid(pid, &status, 0);
+		waitpid(pid, &status, WUNTRACED);
 		count_status(shell, status);
 	}
 	else if (shell->cmd->async == 1)
@@ -91,7 +92,7 @@ void	ms_cmd_execute_fork(t_shell *shell)
 		return (ms_cmd_execute_fork_error());
 	if (pid == 0)
 	{
-		ms_sigint_in_child(shell);
+		ms_signals_handler(shell, 1, 0);
 		tempfd_stdout = dup(1);
 		ms_cmd_execute_fd_null(shell);
 		ms_write_heredoc_file(shell);

@@ -24,7 +24,6 @@ t_shell	*ms_shell_init(void)
 	shell->inputlen = 0;
 	shell->input_i = 0;
 	shell->input_c = 0;
-	shell->sigset = false;
 	shell->lexerstate = LEXER_STATE_DEFAULT;
 	shell->lexercount = 0;
 	shell->lexerlist = NULL;
@@ -35,14 +34,15 @@ t_shell	*ms_shell_init(void)
 	shell->temptrlist = NULL;
 	shell->cmd = NULL;
 	shell->env_size = 0;
-	ms_ignore_signals(shell);
 	ms_prompt_name(shell, MSH_DEFNAME);
+	g_shell = shell;
 	return (shell);
 }
 
 // Некоторые начальные параметры и удаление heredoc 
 static void	ms_before_readline(t_shell *shell)
 {
+	ms_signals_handler(shell, 0, 0);
 	shell->output_error = 0;
 	shell->lexercount = 0;
 	if (shell->cmd != NULL && shell->cmd->heredoc_file != NULL)

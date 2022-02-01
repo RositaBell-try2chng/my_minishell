@@ -1,5 +1,11 @@
 #include "minishell.h"
 
+//Вывод символа (используется только для вывода скрытого 127-го символа)
+void	ft_putchar(int c)
+{
+	write(1, &c, 1);
+}
+
 //Вывод строки
 void	ft_putstr(char *str, int std_var)
 {
@@ -60,10 +66,7 @@ void	ft_puterror_noexit(t_shell *shell, int code)
 void	ft_putexit(t_shell *shell)
 {
 	ft_putstr(COLOR_GREEN, 1);
-	if (OS_VERSION == 1)
-		ft_putstr("Exit: Vi pokinuli programmu. Prihodite eshe!!!\n", 1);
-	if (OS_VERSION == 2)
-		ft_putstr("\nExit: Vi pokinuli programmu. Prihodite eshe!!!\n", 1);
+	ft_putstr("Exit: Vi pokinuli programmu. Prihodite eshe!!!\n", 1);
 	ft_putstr(COLOR_RESET, 1);
 	ms_shell_destroy(shell);
 	exit(0);

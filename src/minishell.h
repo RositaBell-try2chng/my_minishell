@@ -18,7 +18,6 @@
 //# include <dirent.h>
 //# include <errno.h>
 
-# define OS_VERSION				2 // 1 - MAC, 2 - LINUX
 # define MSH_DEFNAME			"MiniShell"
 # define MS_TEST_REGIME			1 // 1 - Test info, 0 - No test info
 # define MS_READLINE_REGIME		1 // 1 - ReadLine (history), 2 - GNL (no leaks)
@@ -50,6 +49,7 @@ typedef struct s_tree	t_tree;
 typedef struct s_trlist	t_trlist;
 typedef struct s_cmd	t_cmd;
 typedef struct s_shell	t_shell;
+t_shell					*g_shell;
 
 typedef struct s_lexer
 {
@@ -100,8 +100,6 @@ typedef struct s_shell
 	int			inputlen;
 	int			input_i;
 	int			input_c;
-	bool		sigset;
-	void		(*sigint_fun)(int);
 	int			lexerstate;
 	int			lexercount;
 	t_lexer		*lexerlist;
@@ -115,9 +113,11 @@ typedef struct s_shell
 	int			env_size;
 	int 		status;
 	char 		*st;
+	pid_t		kill_pid;
 }	t_shell;
 
 //puts.c
+void	ft_putchar(int c);
 void	ft_putstr(char *str, int std_var);
 void	ft_puterror(t_shell *shell, int code, char *name);
 void	ft_puterror_noexit(t_shell *shell, int code);
@@ -130,8 +130,7 @@ void	ms_readline_and_lexerlist(t_shell *shell);
 void	ms_shell_destroy(t_shell *shell);
 
 //signals.c
-void	ms_ignore_signals(t_shell *shell);
-void	ms_sigint_in_child(t_shell *shell);
+void	ms_signals_handler(t_shell *shell, int type, pid_t pid);
 
 //lexer
 int		ms_lexer_chartype(int last, int c, int next);
