@@ -35,7 +35,7 @@ static void	ms_signal_only_text(int sigtype)
 	{
 		ft_putstr("Exit", 1);
 		if (MS_TEST_REGIME == 1)
-			ft_putstr("\nVi nazhali = \"Ctrl+\\\"", 1);
+			ft_putstr("\nVi nazhali \"Ctrl+\\\"", 1);
 	}
 	if (sigtype == SIGINT || sigtype == SIGTSTP || sigtype == SIGQUIT)
 		ft_putstr("\n", 1);
