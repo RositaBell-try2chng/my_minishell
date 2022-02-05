@@ -1,112 +1,135 @@
 #include "libft.h"
 
-static void	*ft_mg_pathjoin(void *dst, const void *src, int if_slash)
+//Наполнение списка найденных папок/файлов
+static t_globlist	*mg_files_to_list(t_glob *glob,
+	char files_names[3000][500], int files_count)
 {
-	if (src != NULL)
-		dst = ft_memjoin(dst, src);
-	if (if_slash == 1)
-		dst = ft_memjoin(dst, "/");
-	return (dst);
-}
+	int	i;
 
-static int	ft_mg_compare(char *s1, char *s2)
-{
-	if (ft_strcmp(s2, ".") == 0 || ft_strcmp(s2, "..") == 0)
-		return (0);
-	if ((!*s1 && !*s2))
-		return (1);
-	else if (*s1 == '?' && *s2)
-		return (ft_mg_compare(s1 + 1, s2 + 1));
-	else if (*s1 == '*' && s1[1] == '*')
-		return (ft_mg_compare(s1 + 1, s2));
-	else if (*s1 == '*' && *s2 == s1[1])
-		return (ft_mg_compare(s1 + 1, s2) || ft_mg_compare(s1, s2 + 1));
-	else if (*s1 == '*' && *s2 != s1[1] && *s2)
-		return (ft_mg_compare(s1, s2 + 1));
-	else if (*s1 == '\\' && *s2 == s1[1]
-		&& (s1[1] == '*' || s1[1] == '?' || s1[1] == '{' || s1[1] == '['))
-		return (ft_mg_compare(s1 + 2, s2 + 1));
-	else if (*s1 == *s2)
-		return (ft_mg_compare(s1 + 1, s2 + 1));
-	return (0);
-}
-
-static char	**ft_mg_filesarray(char files_names[1000][250], int files_count)
-{
-	char	**files_tmp;
-	int		i;
-
-	files_tmp = malloc(sizeof(char *) * (files_count + 1));
-	if (files_tmp == NULL)
-		return (NULL);
 	i = 0;
 	while (i < files_count)
 	{
-		files_tmp[i] = malloc(sizeof(char) * ft_strlen(files_names[i]) + 1);
-		if (files_tmp[i] == NULL)
+		if (glob->folders == NULL)
 		{
-			ft_arrayfree((void ***)&files_tmp, i);
+			glob->folders = mg_glob_folders_add(glob, files_names[i]);
+			glob->t_folders = glob->folders;
+		}
+		else
+		{
+			glob->t_folders->next = mg_glob_folders_add(glob, files_names[i]);
+			glob->t_folders = glob->t_folders->next;
+		}
+		if (glob->t_folders == NULL)
+		{
+			mg_glob_folders_destroy(glob);
+			glob->malloc_error = 1;
 			return (NULL);
 		}
-		ft_strcpy(files_tmp[i], files_names[i]);
+		glob->folders_count++;
 		i++;
 	}
-	files_tmp[i] = NULL;
-	return (files_tmp);
+	return (glob->folders);
 }
 
-static int	ft_mg_scandir(char *scandir, char *filepattern,
-	char ***files, int files_count)
+//Наполнение переменной files_names названиями найденных папок/файлов
+static int mg_files_names_build(t_glob *glob,
+	char files_names[3000][500], char *filename, int i)
 {
-	DIR				*dir;
-	struct dirent	*file;
-	char			files_names[1000][250];
-
-	dir = opendir(scandir);
-	if (dir == NULL && (errno == ENOENT || errno == ENOTDIR))
-		return (0);
-	if (dir == NULL && errno != ENOENT && errno != ENOTDIR)
-		return (-2);
-	while (1)
-	{
-		file = readdir(dir);
-		if (file == NULL)
-			break ;
-		if (ft_mg_compare(filepattern, file->d_name) == 1)
-		{
-			ft_strcpy((char *)files_names[files_count], scandir);
-			ft_mg_pathjoin((char *)files_names[files_count++], file->d_name, 0);
-		}
-	}
-	closedir(dir);
-	*files = ft_mg_filesarray(files_names, files_count);
-	if (*files == NULL)
-		return (-1);
-	return (files_count);
+	files_names[i][0] = '\0';
+	if ((glob->t_scandirs->name[0] != '.' && glob->t_scandirs->name[1] != '\0')
+		|| glob->simple_addr == 0)
+		ft_strcpy((char *)files_names[i], glob->t_scandirs->name);
+	if ((glob->simple_addr == 1 && glob->t_scandirs->name[0] == '.'
+		&& glob->t_scandirs->name[1] == '\0')
+		|| (glob->t_scandirs->name[0] == '/'
+		&& glob->t_scandirs->name[1] == '\0'))
+		mg_pathjoin((char *)files_names[i], filename, 0);
+	else
+		mg_pathjoin((char *)files_names[i], filename, 1);
+	i++;
+	return (i);
 }
 
+//Сканирование папки и поиск вложенных папок/файлов по шаблону
+static int	mg_scandirs(t_glob *glob, char *pattern, DIR *dir, int i)
+{
+	struct dirent	*file;
+	char			files_names[3000][500];
+
+	for (i = 0; glob->t_scandirs; glob->t_scandirs = glob->t_scandirs->next)
+	{
+		dir = opendir(glob->t_scandirs->name);
+		if (dir == NULL && (errno == ENOENT || errno == ENOTDIR))
+			continue ;
+		if (dir == NULL && errno != ENOENT && errno != ENOTDIR)
+			continue ;
+		i = 0;
+		while (1)
+		{
+			file = readdir(dir);
+			if (file == NULL)
+				break ;
+			if (mg_compare(pattern, file->d_name) == 1)
+				i = mg_files_names_build(glob, files_names, file->d_name, i);
+		}
+		closedir(dir);
+		glob->folders = mg_files_to_list(glob, files_names, i);
+		if ((i > 0 && glob->folders == NULL) || glob->malloc_error == 1)
+			return (-1);
+	}
+	return (glob->folders_count);
+}
+
+//Стартовая папка для первого сканирования (в зависимости от адреса шаблона)
+static void	mg_get_first_folders(t_glob *glob, const char *pat)
+{
+	if (ft_strlen(pat) >= 1 && pat[0] == '/')
+	{
+		glob->folders = mg_glob_folders_add(glob, "/");
+		glob->pattern_i = 0;
+	}
+	if (ft_strlen(pat) >= 1 && pat[0] != '.' && pat[0] != '/')
+	{
+		glob->folders = mg_glob_folders_add(glob, ".");
+		glob->pattern_i = 0;
+		glob->simple_addr = 1;
+	}
+	if ((ft_strlen(pat) >= 3 && pat[0] == '.' && pat[1] == '.' && pat[2] == '/')
+		|| (ft_strlen(pat) >= 2 && pat[0] == '.' && pat[1] == '/'))
+	{
+		glob->folders = mg_glob_folders_add(glob, glob->pattern_a[0]);
+		glob->pattern_i = 1;
+	}
+	if (glob->folders == NULL)
+		glob->malloc_error = 1;
+}
+
+//Основная функция
 int	ft_miniglob(char *pattern, char ***files)
 {
-	char	scandir[1000];
-	char	filepattern[250];
-	char	**filepattern_array;
-	int		filepattern_count;
-	int		i;
+	t_glob	*glob;
+	int		files_count;
+	char	*t_pattern;
 
 	*files = NULL;
-	if (ft_strlen(pattern) == 0 || pattern[ft_strlen(pattern) - 1] == '/')
+	if (ft_strlen(pattern) == 0)
 		return (0);
-	filepattern_count = ft_split_count(pattern, '/');
-	filepattern_array = ft_split(pattern, '/');
-	if (filepattern_array == NULL)
+	glob = mg_glob_init(pattern);
+	if (glob == NULL || glob->pattern_a == NULL)
 		return (-1);
-	scandir[0] = '\0';
-	if (pattern[0] == '/')
-		ft_mg_pathjoin(scandir, NULL, 1);
-	i = 0;
-	while (i < filepattern_count - 1)
-		ft_mg_pathjoin(scandir, filepattern_array[i++], 1);
-	ft_strcpy(filepattern, filepattern_array[filepattern_count - 1]);
-	ft_arrayfree((void ***)&filepattern_array, filepattern_count);
-	return (ft_mg_scandir(scandir, filepattern, files, 0));
+	mg_get_first_folders(glob, pattern);
+	if (glob->folders == NULL)
+		return (mg_destroy_if_malloc_error(glob, -1));
+	while (glob->pattern_i < glob->pattern_c)
+	{
+		mg_before_scandirs(glob);
+		t_pattern = glob->pattern_a[glob->pattern_i];
+		glob->scandir_ret = mg_scandirs(glob, t_pattern, NULL, 0);
+		if (glob->scandir_ret < 0)
+			return (mg_destroy_if_malloc_error(glob, glob->scandir_ret));
+		glob->pattern_i++;
+	}
+	files_count = mg_folders_list_to_array(glob, files);
+	mg_miniglob_destroy(glob);
+	return (files_count);
 }
