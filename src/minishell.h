@@ -141,7 +141,7 @@ void	ms_lexerlist_corrector(t_shell *shell);
 void	ms_lexerlist_destroy(t_shell *shell);
 char	**envp_cpy(char **env, t_shell *shell);
 int		ft_str_real_len(char *s, t_shell *shell);
-size_t	copy_var(char *dst, char *src, t_shell *shell, size_t *i_dst);
+void	ms_lexerlist_replace_var(t_shell *shell);
 
 //parser
 t_tree	*ms_tree_malloc(t_shell *shell);

@@ -61,10 +61,10 @@ void	do_shell_command(t_shell *shell)
 	i = 0;
 	while (shell->envp[i] && ft_strncmp("PATH=", shell->envp[i], 5) != 0)
 		i++;
-	if (shell->envp[i])
-		path = (shell->envp[i]) + 5;
+	if (!shell->envp[i] || ft_strchr(shell->cmd->argv[0], '/'))
+		path = "";
 	else
-		path = "/bin:/usr/bin";
+		path = (shell->envp[i]) + 5;
 	if (parse_cmd(&((shell->cmd->argv)[0]), (shell->cmd->argv)[0], path))
 	{
 		ft_putstr("Command doesn't exist(", 2);

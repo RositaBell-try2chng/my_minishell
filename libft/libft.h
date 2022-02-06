@@ -63,5 +63,8 @@ int			ft_miniglob(char *pathpattern, char ***files);
 void		ft_arrayfree(void ***array, size_t count);
 void		ft_free(void **pointer);
 char		*ft_itoa(int n);
-
+int			ft_is_q(int c);
+int			ft_is_1_q(int c);
+int			ft_is_2_q(int c);
+char		*ft_strchr(const char *s, int c);
 #endif
