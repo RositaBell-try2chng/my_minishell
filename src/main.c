@@ -1,5 +1,7 @@
 #include "minishell.h"
 
+t_shell	*g_shell;
+
 int	main(int argc, char **argv, char **envp)
 {
 	t_shell	*shell;
@@ -24,5 +26,4 @@ int	main(int argc, char **argv, char **envp)
 		ms_parse_tree_destroy(shell);
 		ms_trlist_destroy(shell);
 	}
-	return (0);
 }

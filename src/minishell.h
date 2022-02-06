@@ -49,7 +49,7 @@ typedef struct s_tree	t_tree;
 typedef struct s_trlist	t_trlist;
 typedef struct s_cmd	t_cmd;
 typedef struct s_shell	t_shell;
-t_shell					*g_shell;
+extern t_shell			*g_shell;
 
 typedef struct s_lexer
 {
