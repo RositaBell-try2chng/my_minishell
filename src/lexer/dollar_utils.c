@@ -7,7 +7,7 @@ static int	count_var_len(char *s, int *i, t_shell *shell, int *flg)
 
 	k = 0;
 	*flg = 1;
-	while (s[k] && s[k] != '$' && !ft_is_q(s[k]))
+	while (s[k] && s[k] != ' ' && s[k] != '$' && !ft_is_q(s[k]))
 		k++;
 	j = -1;
 	while (++j < shell->env_size - 1)

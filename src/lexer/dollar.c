@@ -28,7 +28,7 @@ static size_t	copy_var(char *dst, char *src, t_shell *shell, size_t *i_dst)
 		*i_dst = *i_dst + i;
 		return (2);
 	}
-	while (src[k] && src[k] != '$' && !ft_is_q(src[k]))
+	while (src[k] && src[k] != ' ' && src[k] != '$' && !ft_is_q(src[k]))
 		k++;
 	while (++j < shell->env_size - 1)
 	{
