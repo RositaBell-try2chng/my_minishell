@@ -70,11 +70,12 @@ void	ms_readline_and_lexerlist(t_shell *shell)
 			if (ft_gnl(0, &shell->input) == 0)
 				ft_putexit(shell);
 	}
-	shell->inputlen = ft_strlen(shell->input);
-	if (shell->inputlen > 0)
+	if (shell->input[0])
 	{
 		if (MS_READLINE_REGIME == 1)
 			add_history(shell->input);
+		ms_lexerlist_replace_var(shell);
+		shell->inputlen = ft_strlen(shell->input);
 		ms_lexerlist_build(shell);
 	}
 	if (shell->lexercount > 0)
