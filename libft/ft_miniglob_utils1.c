@@ -81,6 +81,7 @@ void	*mg_pathjoin(void *dst, const void *src, int if_slash)
 int	mg_folders_list_to_array(t_glob *glob, char ***files)
 {
 	int	i;
+	int	name_length;
 
 	glob->t_folders = glob->folders;
 	*files = malloc(sizeof(char *) * (glob->folders_count + 1));
@@ -89,7 +90,8 @@ int	mg_folders_list_to_array(t_glob *glob, char ***files)
 	i = 0;
 	while (glob->t_folders != NULL)
 	{
-		(*files)[i] = malloc(sizeof(char) * ft_strlen(glob->t_folders->name) + 1);
+		name_length = ft_strlen(glob->t_folders->name);
+		(*files)[i] = malloc(sizeof(char) * (name_length + 1));
 		if ((*files)[i] == NULL)
 		{
 			ft_arrayfree((void ***)files, i);

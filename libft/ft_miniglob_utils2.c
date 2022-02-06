@@ -1,7 +1,7 @@
 #include "libft.h"
 
 //Подготовительные действия перед сканированием папки
-void mg_before_scandirs(t_glob *glob)
+void	mg_before_scandirs(t_glob *glob)
 {
 	mg_glob_scandirs_destroy(glob);
 	glob->scandirs = glob->folders;

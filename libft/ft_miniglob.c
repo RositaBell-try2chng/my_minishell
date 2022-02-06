@@ -32,7 +32,7 @@ static t_globlist	*mg_files_to_list(t_glob *glob,
 }
 
 //Наполнение переменной files_names названиями найденных папок/файлов
-static int mg_files_names_build(t_glob *glob,
+static int	mg_filenames_build(t_glob *glob,
 	char files_names[3000][500], char *filename, int i)
 {
 	files_names[i][0] = '\0';
@@ -40,9 +40,9 @@ static int mg_files_names_build(t_glob *glob,
 		|| glob->simple_addr == 0)
 		ft_strcpy((char *)files_names[i], glob->t_scandirs->name);
 	if ((glob->simple_addr == 1 && glob->t_scandirs->name[0] == '.'
-		&& glob->t_scandirs->name[1] == '\0')
+			&& glob->t_scandirs->name[1] == '\0')
 		|| (glob->t_scandirs->name[0] == '/'
-		&& glob->t_scandirs->name[1] == '\0'))
+			&& glob->t_scandirs->name[1] == '\0'))
 		mg_pathjoin((char *)files_names[i], filename, 0);
 	else
 		mg_pathjoin((char *)files_names[i], filename, 1);
@@ -56,26 +56,26 @@ static int	mg_scandirs(t_glob *glob, char *pattern, DIR *dir, int i)
 	struct dirent	*file;
 	char			files_names[3000][500];
 
-	for (i = 0; glob->t_scandirs; glob->t_scandirs = glob->t_scandirs->next)
+	while (glob->t_scandirs != NULL)
 	{
 		dir = opendir(glob->t_scandirs->name);
-		if (dir == NULL && (errno == ENOENT || errno == ENOTDIR))
-			continue ;
-		if (dir == NULL && errno != ENOENT && errno != ENOTDIR)
-			continue ;
-		i = 0;
-		while (1)
+		if (dir != NULL)
 		{
-			file = readdir(dir);
-			if (file == NULL)
-				break ;
-			if (mg_compare(pattern, file->d_name) == 1)
-				i = mg_files_names_build(glob, files_names, file->d_name, i);
+			i = 0;
+			while (1)
+			{
+				file = readdir(dir);
+				if (file == NULL)
+					break ;
+				if (mg_compare(pattern, file->d_name) == 1)
+					i = mg_filenames_build(glob, files_names, file->d_name, i);
+			}
+			closedir(dir);
+			glob->folders = mg_files_to_list(glob, files_names, i);
+			if ((i > 0 && glob->folders == NULL) || glob->malloc_error == 1)
+				return (-1);
 		}
-		closedir(dir);
-		glob->folders = mg_files_to_list(glob, files_names, i);
-		if ((i > 0 && glob->folders == NULL) || glob->malloc_error == 1)
-			return (-1);
+		glob->t_scandirs = glob->t_scandirs->next;
 	}
 	return (glob->folders_count);
 }
