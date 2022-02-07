@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   executor_1.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ztune <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/02/08 0:01:01 by ztune              #+#    #+#             */
+/*   Updated: 2022/02/08 0:02:02 by ztune             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 static void	ms_tree_execute_pipe(t_shell *shell, t_tree *node,
@@ -48,7 +60,11 @@ static void	ms_tree_execute_cmdline(t_shell *shell, t_tree *tree)
 	if (tree == NULL)
 		return ;
 	if (shell->cmd == NULL)
+	{
 		shell->cmd = (t_cmd *)malloc(sizeof(t_cmd));
+		if (shell->cmd != NULL)
+			shell->cmd->heredoc_file = NULL;
+	}
 	if (shell->cmd == NULL)
 		ft_puterror(shell, 2, "(struktura CMD).\n");
 	if (tree->type == TREE_SEM)

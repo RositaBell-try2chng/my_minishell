@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   export_utils.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ztune <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/02/08 0:01:01 by ztune              #+#    #+#             */
+/*   Updated: 2022/02/08 0:02:02 by ztune             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 int	check_correct_var(t_shell *shell, char *s, char flg)
@@ -45,7 +57,7 @@ static int	no_var(char **env, char *s)
 int	count_correct_var(t_shell *shell, char **argv, int argc)
 {
 	int	res;
-	int i;
+	int	i;
 
 	res = 0;
 	i = -1;

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   executor_2.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ztune <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/02/08 0:01:01 by ztune              #+#    #+#             */
+/*   Updated: 2022/02/08 0:02:02 by ztune             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 void	ms_tree_execute_args(t_shell *shell, t_tree *node, t_tree *temp, int i)
@@ -55,9 +67,14 @@ static void	ms_tree_execute_simplecmd(t_shell *shell, t_tree *node,
 	shell->cmd->redirect_dblin = NULL;
 	shell->cmd->redirect_dblout = NULL;
 	shell->cmd->heredoc_fd = -1;
+	if (shell->cmd->heredoc_file != NULL)
+	{
+		unlink(shell->cmd->heredoc_file);
+		ft_free((void **)&shell->cmd->heredoc_file);
+	}
 	shell->cmd->heredoc_file = NULL;
 	if (node != NULL && (node->type == TREE_REDIN || node->type == TREE_REDOUT
-		|| node->type == TREE_DBLIN || node->type == TREE_DBLOUT))
+			|| node->type == TREE_DBLIN || node->type == TREE_DBLOUT))
 	{
 		ms_tree_execute_nextarrow(shell, node);
 		return ;
@@ -78,9 +95,14 @@ static void	ms_tree_execute_simplecmd_dbl(t_shell *shell, t_tree *node,
 	shell->cmd->redirect_dblin = redirect_dblin;
 	shell->cmd->redirect_dblout = redirect_dblout;
 	shell->cmd->heredoc_fd = -1;
+	if (shell->cmd->heredoc_file != NULL)
+	{
+		unlink(shell->cmd->heredoc_file);
+		ft_free((void **)&shell->cmd->heredoc_file);
+	}
 	shell->cmd->heredoc_file = NULL;
 	if (node != NULL && (node->type == TREE_REDIN || node->type == TREE_REDOUT
-		|| node->type == TREE_DBLIN || node->type == TREE_DBLOUT))
+			|| node->type == TREE_DBLIN || node->type == TREE_DBLOUT))
 	{
 		ms_tree_execute_nextarrow(shell, node);
 		return ;

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   dollar_utils.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ztune <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/02/08 0:01:01 by ztune              #+#    #+#             */
+/*   Updated: 2022/02/08 0:02:02 by ztune             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 static int	count_var_len(char *s, int *i, t_shell *shell, int *flg)
@@ -34,10 +46,10 @@ static void	counts(int *res, int *i, char *s, int *flg)
 
 int	ft_str_real_len(char *s, t_shell *shell)
 {
-	int res;
-	int i;
-	int flg;
-	int flg_q;
+	int	res;
+	int	i;
+	int	flg;
+	int	flg_q;
 
 	res = 0;
 	i = 0;

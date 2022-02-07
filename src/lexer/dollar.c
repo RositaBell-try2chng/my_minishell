@@ -1,8 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   dollar.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ztune <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/02/08 0:01:01 by ztune              #+#    #+#             */
+/*   Updated: 2022/02/08 0:02:02 by ztune             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-static int count_offset_dst(char *dst, int j, t_shell *shell, char *s)
+static int	count_offset_dst(char *dst, int j, t_shell *shell, char *s)
 {
-	int res;
+	int	res;
 
 	res = 0;
 	if (j == shell->env_size - 1)
@@ -70,7 +82,7 @@ static void	ms_replace_variable(char *dst, char *src, t_shell *shell)
 void	ms_lexerlist_replace_var(t_shell *shell)
 {
 	char	*tmp;
-	int 	flg_dollar;
+	int		flg_dollar;
 
 	flg_dollar = ft_str_real_len(shell->input, shell);
 	if (flg_dollar > 0)

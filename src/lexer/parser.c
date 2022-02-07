@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parser.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ztune <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/02/08 0:01:01 by ztune              #+#    #+#             */
+/*   Updated: 2022/02/08 0:02:02 by ztune             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 static void	ms_lexer_parser_defualt_separate(t_shell *shell, int c, int dblsep)
@@ -6,8 +18,8 @@ static void	ms_lexer_parser_defualt_separate(t_shell *shell, int c, int dblsep)
 
 	value_length = shell->inputlen - shell->input_i;
 	if (c == -3)
-		shell->templexer->value[shell->lexval_i++] =
-			shell->input[shell->input_i];
+		shell->templexer->value[shell->lexval_i++]
+			= shell->input[shell->input_i];
 	if (shell->lexval_i > 0)
 	{
 		shell->templexer->value[shell->lexval_i] = '\0';
@@ -24,8 +36,8 @@ static void	ms_lexer_parser_defualt_separate(t_shell *shell, int c, int dblsep)
 		shell->templexer = shell->templexer->next;
 	}
 	if (c == -2)
-		shell->templexer->value[shell->lexval_i++] =
-			shell->input[shell->input_i];
+		shell->templexer->value[shell->lexval_i++]
+			= shell->input[shell->input_i];
 }
 
 static void	ms_lexer_parser_defualt(t_shell *shell, int c)
@@ -103,10 +115,11 @@ void	ms_lexer_parser(t_shell *shell)
 	{
 		if (shell->input_i == 0)
 			shell->input_c = ms_lexer_chartype(0, shell->input[shell->input_i],
-				shell->input[shell->input_i + 1]);
+					shell->input[shell->input_i + 1]);
 		if (shell->input_i > 0)
 			shell->input_c = ms_lexer_chartype(shell->input[shell->input_i - 1],
-				shell->input[shell->input_i], shell->input[shell->input_i + 1]);
+					shell->input[shell->input_i],
+					shell->input[shell->input_i + 1]);
 		if (shell->lexerstate == LEXER_STATE_DEFAULT)
 			ms_lexer_parser_defualt(shell, shell->input_c);
 		else if (shell->lexerstate == LEXER_STATE_DQUOTES)

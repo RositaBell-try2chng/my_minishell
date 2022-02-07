@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   fork.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ztune <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/02/08 0:01:01 by ztune              #+#    #+#             */
+/*   Updated: 2022/02/08 0:02:02 by ztune             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 static int	ms_cmd_execute_command(t_shell *shell)
@@ -32,7 +44,7 @@ static void	ms_execute_zombie_handler(int signum)
 	stop = 0;
 	while (stop == 0)
 	{
-		pid = waitpid(-1, NULL, WNOHANG); // Вместо NULL был status
+		pid = waitpid(-1, NULL, WNOHANG);
 		if (pid > 0)
 			printf("Process %d terminated\n", pid);
 		if (pid <= 0)
@@ -56,7 +68,6 @@ static void	ms_cmd_execute_after_fork(t_shell *shell, pid_t pid)
 		printf("Process %d started\n", pid);
 		act.sa_flags = 0;
 		act.sa_handler = ms_execute_zombie_handler;
-		//sigfillset(&(act.sa_mask)); // to block all // Не понял для чего
 		if (sigaction(SIGCHLD, &act, NULL) != 0)
 		{
 			ft_putstr(COLOR_RED, 2);

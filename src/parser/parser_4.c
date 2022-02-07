@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parser_4.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ztune <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/02/08 0:01:01 by ztune              #+#    #+#             */
+/*   Updated: 2022/02/08 0:02:02 by ztune             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 static t_tree	*ms_parse_cmdargs(t_shell *shell);
@@ -58,8 +70,8 @@ t_tree	*ms_parse_cmd_nextarrow(t_shell *shell, t_tree *file_node)
 
 	if (shell->templexer != NULL && shell->templexer->next != NULL
 		&& (shell->templexer->type == '<' || shell->templexer->type == '>'
-		|| shell->templexer->type == LEXER_TYPE_DLBIN
-		|| shell->templexer->type == LEXER_TYPE_DLBOUT)
+			|| shell->templexer->type == LEXER_TYPE_DLBIN
+			|| shell->templexer->type == LEXER_TYPE_DLBOUT)
 		&& shell->templexer->next->type == -1)
 	{
 		result = ms_tree_malloc(shell);

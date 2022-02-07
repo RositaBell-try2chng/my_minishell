@@ -1,11 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cd.c                                               :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ztune <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/02/08 0:01:01 by ztune              #+#    #+#             */
+/*   Updated: 2022/02/08 0:02:02 by ztune             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-static void too_many_arg(t_shell *shell)
+static void	too_many_arg(t_shell *shell)
 {
 	shell->status = 1;
-	//ft_putstr(COLOR_RED, 2);
 	ft_putstr("cd: neobhodimo ukazat tolko odin parametr\n", 2);
-	//ft_putstr(COLOR_RESET, 2);
 }
 
 static void	error_chdir(t_shell *shell)

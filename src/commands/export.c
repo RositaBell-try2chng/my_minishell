@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   export.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ztune <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/02/08 0:01:01 by ztune              #+#    #+#             */
+/*   Updated: 2022/02/08 0:02:02 by ztune             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-static char **copy_old_env(char **new_env, t_shell *shell, int j)
+static char	**copy_old_env(char **new_env, t_shell *shell, int j)
 {
 	if (new_env != NULL)
 	{
@@ -16,7 +28,7 @@ static void	make_new_env(char ***new_env, t_shell *shell, int j)
 {
 	int	flg;
 	int	i;
-	int index;
+	int	index;
 
 	*new_env = copy_old_env(*new_env, shell, j);
 	i = 0;
@@ -35,8 +47,8 @@ static void	make_new_env(char ***new_env, t_shell *shell, int j)
 static void	sort_envp(char **env)
 {
 	char	*tmp;
-	int	i;
-	int	j;
+	int		i;
+	int		j;
 	char	flg_sort;
 
 	flg_sort = 0;
@@ -82,7 +94,7 @@ static void	export_no_arg(t_shell *shell, char **env, int size)
 
 void	ms_cmd_execute_export(t_shell *shell)
 {
-	int 	j;
+	int		j;
 	int		cnt;
 	char	**new_env;
 	int		i;

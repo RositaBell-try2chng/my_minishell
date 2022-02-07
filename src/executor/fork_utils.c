@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   fork_utils.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ztune <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/02/08 0:01:01 by ztune              #+#    #+#             */
+/*   Updated: 2022/02/08 0:02:02 by ztune             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 void	ms_cmd_execute_fork_error(void)
@@ -56,10 +68,10 @@ void	ms_cmd_execute_fd_redirect_out(t_shell *shell)
 	{
 		if (shell->cmd->redirect_out)
 			fd = open(shell->cmd->redirect_out,
-				O_WRONLY | O_CREAT | O_TRUNC, 0644);
+					O_WRONLY | O_CREAT | O_TRUNC, 0644);
 		else if (shell->cmd->redirect_dblout)
 			fd = open(shell->cmd->redirect_dblout,
-				O_WRONLY | O_CREAT | O_APPEND, 0644);
+					O_WRONLY | O_CREAT | O_APPEND, 0644);
 		if (fd == -1)
 		{
 			ft_putstr(COLOR_RED, 2);

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parser_1.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ztune <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/02/08 0:01:01 by ztune              #+#    #+#             */
+/*   Updated: 2022/02/08 0:02:02 by ztune             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 static t_tree	*ms_parse_cmdline_sem_before(t_shell *shell);
@@ -11,31 +23,25 @@ t_tree	*ms_parse_cmdline(t_shell *shell)
 	t_tree	*node;
 
 	save = shell->templexer;
-	
 	node = ms_parse_cmdline_sem_before(shell);
 	if (node != NULL)
 		return (node);
 	shell->templexer = save;
-	
 	node = ms_parse_cmdline_sem_after(shell);
 	if (node != NULL)
 		return (node);
 	shell->templexer = save;
-	
 	node = ms_parse_cmdline_amp_before(shell);
 	if (node != NULL)
 		return (node);
 	shell->templexer = save;
-	
 	node = ms_parse_cmdline_amp_after(shell);
 	if (node != NULL)
 		return (node);
 	shell->templexer = save;
-	
 	node = ms_parse_cmdline_pipe(shell);
 	if (node != NULL)
 		return (node);
-	
 	return (NULL);
 }
 

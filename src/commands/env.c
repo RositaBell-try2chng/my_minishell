@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   env.c                                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ztune <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/02/08 0:01:01 by ztune              #+#    #+#             */
+/*   Updated: 2022/02/08 0:02:02 by ztune             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 void	ms_cmd_execute_env(t_shell *shell)
@@ -19,7 +31,7 @@ void	ms_cmd_execute_env(t_shell *shell)
 
 char	**envp_cpy(char **env, t_shell *shell)
 {
-	int 	i;
+	int		i;
 	char	**new_env;
 
 	i = 0;

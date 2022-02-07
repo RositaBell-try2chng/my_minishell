@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   unset.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ztune <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/02/08 0:01:01 by ztune              #+#    #+#             */
+/*   Updated: 2022/02/08 0:02:02 by ztune             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 int	find_variable(char **env, char *s)
@@ -40,7 +52,7 @@ static void	delete_variable(char **env)
 void	ms_cmd_execute_unset(t_shell *shell)
 {
 	int	i;
-	int j;
+	int	j;
 
 	shell->status = 0;
 	i = 0;
@@ -55,7 +67,7 @@ void	ms_cmd_execute_unset(t_shell *shell)
 	}
 }
 
-void delete_if_need(char *s)
+void	delete_if_need(char *s)
 {
 	size_t	i;
 

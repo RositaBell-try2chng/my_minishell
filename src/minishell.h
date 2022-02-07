@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ztune <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/02/08 0:01:01 by ztune              #+#    #+#             */
+/*   Updated: 2022/02/08 0:02:02 by ztune             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
@@ -9,18 +21,10 @@
 # include <signal.h>
 # include <sys/wait.h>
 # include <fcntl.h>
-//# include <assert.h>
-//# include <stdlib.h>
-//# include <unistd.h>
-//# include <string.h>
-//# include <pwd.h>
-//# include <sys/types.h>
-//# include <dirent.h>
-//# include <errno.h>
 
 # define MSH_DEFNAME			"MiniShell"
-# define MS_TEST_REGIME			1 // 1 - Test info, 0 - No test info
-# define MS_READLINE_REGIME		1 // 1 - ReadLine (history), 2 - GNL (no leaks)
+# define MS_TEST_REGIME			0 // 1 - Test info, 0 - No test info
+# define MS_READLINE_REGIME		2 // 1 - ReadLine (history), 2 - GNL (no leaks)
 # define COLOR_GREEN			"\x1b[38;5;118m"
 # define COLOR_RED				"\x1b[38;5;196m"
 # define COLOR_ORANGE			"\x1b[38;5;208m"
@@ -111,8 +115,8 @@ typedef struct s_shell
 	t_cmd		*cmd;
 	char		**envp;
 	int			env_size;
-	int 		status;
-	char 		*st;
+	int			status;
+	char		*st;
 	pid_t		kill_pid;
 }	t_shell;
 
