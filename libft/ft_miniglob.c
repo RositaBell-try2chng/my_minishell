@@ -83,15 +83,16 @@ static int	mg_scandirs(t_glob *glob, char *pattern, DIR *dir, int i)
 //Стартовая папка для первого сканирования (в зависимости от адреса шаблона)
 static void	mg_get_first_folders(t_glob *glob, const char *pat)
 {
+	glob->pattern_i = 0;
+	if (ft_strlen(pat) == 2 && pat[0] == '.' && pat[1] == '*')
+		glob->folders = mg_glob_folders_add(glob, ".");
+	if (ft_strlen(pat) == 3 && pat[0] == '.' && pat[1] == '.' && pat[2] == '*')
+		glob->folders = mg_glob_folders_add(glob, "..");
 	if (ft_strlen(pat) >= 1 && pat[0] == '/')
-	{
 		glob->folders = mg_glob_folders_add(glob, "/");
-		glob->pattern_i = 0;
-	}
 	if (ft_strlen(pat) >= 1 && pat[0] != '.' && pat[0] != '/')
 	{
 		glob->folders = mg_glob_folders_add(glob, ".");
-		glob->pattern_i = 0;
 		glob->simple_addr = 1;
 	}
 	if ((ft_strlen(pat) >= 3 && pat[0] == '.' && pat[1] == '.' && pat[2] == '/')
@@ -112,7 +113,7 @@ int	ft_miniglob(char *pattern, char ***files)
 	char	*t_pattern;
 
 	*files = NULL;
-	if (ft_strlen(pattern) == 0)
+	if (ft_strlen(pattern) == 0 || mg_value_with_star(pattern) == 0)
 		return (0);
 	glob = mg_glob_init(pattern);
 	if (glob == NULL || glob->pattern_a == NULL)

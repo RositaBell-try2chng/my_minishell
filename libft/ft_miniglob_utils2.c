@@ -1,5 +1,20 @@
 #include "libft.h"
 
+//Все работает только тогда, когда у аргумента есть '*'
+int	mg_value_with_star(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == '*')
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
 //Подготовительные действия перед сканированием папки
 void	mg_before_scandirs(t_glob *glob)
 {

@@ -37,6 +37,7 @@ typedef struct s_glob
 //MiniGlob
 t_glob		*mg_glob_init(char *pattern);
 t_globlist	*mg_glob_folders_add(t_glob *glob, char *name);
+int			mg_value_with_star(char *str);
 void		mg_before_scandirs(t_glob *glob);
 int			mg_compare(char *s1, char *s2);
 void		*mg_pathjoin(void *dst, const void *src, int if_slash);
@@ -67,4 +68,5 @@ int			ft_is_q(int c);
 int			ft_is_1_q(int c);
 int			ft_is_2_q(int c);
 char		*ft_strchr(const char *s, int c);
+
 #endif
