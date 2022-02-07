@@ -79,10 +79,10 @@ void	do_shell_command(t_shell *shell)
 		ft_putstr(").\n", 2);
 		ms_cmd_argv_free(shell->cmd);
 		ms_shell_destroy(shell);
-		exit(1);
+		exit(127);
 	}
 	execve(shell->cmd->argv[0], shell->cmd->argv, shell->envp);
-	ft_puterror(shell, 3, "");
+	ft_puterror(shell, 3, strerror(errno));
 }
 
 void	count_status(t_shell *shell, int status)

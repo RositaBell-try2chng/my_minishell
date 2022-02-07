@@ -71,14 +71,6 @@ static void	ms_lexerlist_corrector_amps_pipes(t_shell *shell)
 
 void	ms_lexerlist_corrector(t_shell *shell)
 {
-	char *tmp;
-
 	ms_lexerlist_corrector_arrows(shell);
 	ms_lexerlist_corrector_amps_pipes(shell);
-	tmp = shell->st;
-	shell->st = ft_itoa(shell->status);
-	if (!shell->st)
-		shell->st = tmp;
-	else
-		free(tmp);
 }

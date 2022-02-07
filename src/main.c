@@ -2,6 +2,26 @@
 
 t_shell	*g_shell;
 
+static void ms_shell_status_string(t_shell *shell)
+{
+	char *tmp;
+
+	if (!shell->st)
+	{
+		shell->st = ft_itoa(shell->status);
+		if (!shell->st)
+			return (ft_putstr("Not enough memory for status\n", 2));
+	}
+	tmp = shell->st;
+	shell->st = ft_itoa(shell->status);
+	if (!shell->st)
+	{
+		shell->st = tmp;
+		return (ft_putstr("Not enough memory for status\n", 2));
+	}
+	free(tmp);
+}
+
 int	main(int argc, char **argv, char **envp)
 {
 	t_shell	*shell;
@@ -10,9 +30,10 @@ int	main(int argc, char **argv, char **envp)
 	shell = ms_shell_init();
 	shell->envp = envp_cpy(envp, shell);
 	shell->status = 0;
-	shell->st = ft_itoa(shell->status);
+	shell->st = NULL;
 	while (1)
 	{
+		ms_shell_status_string(shell);
 		ms_readline_and_lexerlist(shell);
 		if (shell->lexercount > 0 && MS_TEST_REGIME == 1)
 			ms_lexerlist_print(shell);
