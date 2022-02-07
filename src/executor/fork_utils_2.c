@@ -69,7 +69,7 @@ void	do_shell_command(t_shell *shell)
 	{
 		ft_putstr("Command doesn't exist(", 2);
 		ft_putstr((shell->cmd->argv)[0], 2);
-		write(2, ").\n", 3);
+		ft_putstr(").\n", 2);
 		exit(1);
 	}
 	execve(shell->cmd->argv[0], shell->cmd->argv, shell->envp);
