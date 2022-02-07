@@ -1,5 +1,12 @@
 #include "minishell.h"
 
+static char	ms_free_tmp_cmd(char **tmp)
+{
+	free(*tmp);
+	*tmp = NULL;
+	return (0);
+}
+
 static char	*check_cmd(const char *cmd, size_t s_cmd, char *path, size_t s_path)
 {
 	char	*new;
@@ -33,12 +40,12 @@ static char	parse_cmd(char **dst, const char *cmd, char *path)
 
 	size_cmd = 0;
 	if (!tmp)
-		tmp = ft_strdup(cmd);
+		tmp = *dst;
 	while (cmd[size_cmd])
 		size_cmd++;
 	*dst = check_cmd(cmd, size_cmd, path, 0);
 	if (*dst)
-		return (0);
+		return (ms_free_tmp_cmd(&tmp));
 	while (*path)
 	{
 		size_path = 0;
@@ -46,7 +53,7 @@ static char	parse_cmd(char **dst, const char *cmd, char *path)
 			size_path++;
 		*dst = check_cmd(cmd, size_cmd, path, size_path);
 		if (*dst)
-			return (0);
+			return (ms_free_tmp_cmd(&tmp));
 		path += size_path + (path[size_path] == ':');
 	}
 	*dst = tmp;
@@ -70,6 +77,8 @@ void	do_shell_command(t_shell *shell)
 		ft_putstr("Command doesn't exist(", 2);
 		ft_putstr((shell->cmd->argv)[0], 2);
 		ft_putstr(").\n", 2);
+		ms_cmd_argv_free(shell->cmd);
+		ms_shell_destroy(shell);
 		exit(1);
 	}
 	execve(shell->cmd->argv[0], shell->cmd->argv, shell->envp);
