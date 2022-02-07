@@ -1,5 +1,16 @@
 #include "minishell.h"
 
+int	ms_check_dquotes(t_shell *shell, const char *input, int i)
+{
+	if (shell->lexval_i > 0)
+		return (0);
+	if (input[i + 1] != '|' && input[i + 1] != ';' && input[i + 1] != '>' && \
+	input[i + 1] != '<' && input[i + 1] != '&' && input[i + 1] != ' ' && \
+	input[i + 1] != '\0' && input[i + 1] != '\n')
+		return (0);
+	return (1);
+}
+
 static void	ms_lexerlist_corrector_arrows(t_shell *shell)
 {
 	t_lexer	*templexer;

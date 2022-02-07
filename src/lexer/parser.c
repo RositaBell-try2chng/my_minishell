@@ -69,6 +69,10 @@ static void	ms_lexer_parser_dquotes(t_shell *shell)
 	else if (shell->input_c == '\"')
 	{
 		shell->lexerstate = LEXER_STATE_DEFAULT;
+		if (!ms_check_dquotes(shell, shell->input, shell->input_i))
+			return ;
+		shell->templexer->value[shell->lexval_i] = 0;
+		shell->lexval_i++;
 	}
 }
 
@@ -82,6 +86,10 @@ static void	ms_lexer_parser_quotes(t_shell *shell)
 	else if (shell->input_c == '\'')
 	{
 		shell->lexerstate = LEXER_STATE_DEFAULT;
+		if (!ms_check_dquotes(shell, shell->input, shell->input_i))
+			return ;
+		shell->templexer->value[shell->lexval_i] = 0;
+		shell->lexval_i++;
 	}
 }
 
