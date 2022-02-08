@@ -15,8 +15,17 @@
 void	ms_cmd_execute_env(t_shell *shell)
 {
 	size_t	i;
+	int		j;
 	char	**env;
 
+	j = find_variable(shell->envp, "PATH");
+	if (j < 0)
+	{
+		ft_putstr("Command doesn't exist (env).\n", 2);
+		ms_cmd_argv_free(shell->cmd);
+		ms_shell_destroy(shell);
+		exit(127);
+	}
 	i = -1;
 	env = shell->envp;
 	while (env[++i])
