@@ -23,7 +23,7 @@
 # include <fcntl.h>
 
 # define MSH_DEFNAME			"MiniShell"
-# define MS_TEST_REGIME			1 // 1 - Test info, 0 - No test info
+# define MS_TEST_REGIME			0 // 1 - Test info, 0 - No test info
 # define MS_READLINE_REGIME		1 // 1 - ReadLine (history), 2 - GNL (no leaks)
 # define COLOR_GREEN			"\x1b[38;5;118m"
 # define COLOR_RED				"\x1b[38;5;196m"
