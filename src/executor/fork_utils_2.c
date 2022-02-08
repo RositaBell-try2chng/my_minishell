@@ -12,16 +12,21 @@
 
 #include "minishell.h"
 
-static char	ft_is_dir(char *name)
+static void	ft_is_dir(t_shell *shell, char *name)
 {
 	int	fd;
 
 	fd = open(name, O_WRONLY);
 	if (fd < 0 && errno == 21)
-		return (1);
+	{
+		ft_putstr(name, 2);
+		ft_putstr(" - is a directory\n", 2);
+		ms_cmd_argv_free(shell->cmd);
+		ms_shell_destroy(shell);
+		exit(126);
+	}
 	else if (fd > 0)
 		close(fd);
-	return (0);
 }
 
 static char	*check_cmd(const char *cmd, size_t s_cmd, char *path, size_t s_path)
@@ -43,7 +48,7 @@ static char	*check_cmd(const char *cmd, size_t s_cmd, char *path, size_t s_path)
 	while (++i < s_cmd)
 		new[i + s_path + flg] = cmd[i];
 	new[i + s_path + flg] = 0;
-	if (!access(new, X_OK) && !ft_is_dir(new))
+	if (!access(new, X_OK))
 		return (new);
 	free(new);
 	return (NULL);
@@ -98,6 +103,7 @@ void	do_shell_command(t_shell *shell)
 		ms_shell_destroy(shell);
 		exit(127);
 	}
+	ft_is_dir(shell, shell->cmd->argv[0]);
 	execve(shell->cmd->argv[0], shell->cmd->argv, shell->envp);
 	ft_puterror(shell, 3, strerror(errno));
 }
