@@ -17,7 +17,7 @@ static int	count_offset_dst(char *dst, int j, t_shell *shell, char *s)
 	int	res;
 
 	res = 0;
-	if (j == shell->env_size - 1)
+	if (!shell->envp[j])
 		return (res);
 	res = ft_strlen(s);
 	ft_memcpy((void *)dst, (void *)s, res);
@@ -40,9 +40,9 @@ static size_t	copy_var(char *dst, char *src, t_shell *shell, size_t *i_dst)
 		*i_dst = *i_dst + i;
 		return (2);
 	}
-	while (src[k] && src[k] != ' ' && src[k] != '$' && !ft_is_q(src[k]))
+	while (src[k] && ft_is_var_name(src[k]))
 		k++;
-	while (++j < shell->env_size - 1)
+	while (shell->envp[++j])
 	{
 		if (!ft_strncmp(shell->envp[j], src, k) && shell->envp[j][k] == '=')
 			break ;
@@ -64,7 +64,7 @@ static void	ms_replace_variable(char *dst, char *src, t_shell *shell)
 	{
 		if (ft_is_1_q(src[i_sr]))
 			flg_q = !flg_q;
-		if (!flg_q && src[i_sr] == '$' && ft_isalpha(src[i_sr + 1]))
+		if (!flg_q && src[i_sr] == '$' && ft_is_begin_var(src[i_sr + 1]))
 			i_sr += copy_var(dst + i_ds, src + i_sr + 1, shell, &i_ds) + 1;
 		else if (!flg_q && src[i_sr] == '$' && src[i_sr + 1] == '?')
 			i_sr += copy_var(dst + i_ds, (char *)shell, shell, &i_ds);

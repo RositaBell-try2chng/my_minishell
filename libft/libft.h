@@ -78,5 +78,8 @@ int			ft_is_q(int c);
 int			ft_is_1_q(int c);
 int			ft_is_2_q(int c);
 char		*ft_strchr(const char *s, int c);
-
+int			ft_is_var_name(int c);
+int			ft_is_low_dash(int c);
+int			ft_isalnum(int c);
+int			ft_is_begin_var(int c);
 #endif

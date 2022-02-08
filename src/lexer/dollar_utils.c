@@ -19,7 +19,7 @@ static int	count_var_len(char *s, int *i, t_shell *shell, int *flg)
 
 	k = 0;
 	*flg = 1;
-	while (s[k] && s[k] != ' ' && s[k] != '$' && !ft_is_q(s[k]))
+	while (s[k] && ft_is_var_name(s[k]))
 		k++;
 	j = -1;
 	while (++j < shell->env_size - 1)
@@ -28,7 +28,7 @@ static int	count_var_len(char *s, int *i, t_shell *shell, int *flg)
 			break ;
 	}
 	*i = *i + k;
-	if (j < shell->env_size - 1)
+	if (shell->envp[j])
 		return (ft_strlen(shell->envp[j] + k + 1));
 	return (0);
 }
@@ -59,7 +59,7 @@ int	ft_str_real_len(char *s, t_shell *shell)
 	{
 		if (ft_is_1_q(s[i]))
 			flg_q = !flg_q;
-		if (!flg_q && s[i] == '$' && ft_isalpha(s[i + 1]))
+		if (!flg_q && s[i] == '$' && ft_is_begin_var(s[i + 1]))
 			res += count_var_len(s + i + 1, &i, shell, &flg);
 		else if (!flg_q && s[i] == '$' && s[i + 1] == '?')
 			counts(&res, &i, shell->st, &flg);

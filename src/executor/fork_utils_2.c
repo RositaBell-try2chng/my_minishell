@@ -12,10 +12,15 @@
 
 #include "minishell.h"
 
-static char	ms_free_tmp_cmd(char **tmp)
+static char	ft_is_dir(char *name)
 {
-	free(*tmp);
-	*tmp = NULL;
+	int	fd;
+
+	fd = open(name, O_WRONLY);
+	if (fd < 0 && errno == 21)
+		return (1);
+	else if (fd > 0)
+		close(fd);
 	return (0);
 }
 
@@ -38,7 +43,7 @@ static char	*check_cmd(const char *cmd, size_t s_cmd, char *path, size_t s_path)
 	while (++i < s_cmd)
 		new[i + s_path + flg] = cmd[i];
 	new[i + s_path + flg] = 0;
-	if (!access(new, X_OK))
+	if (!access(new, X_OK) && !ft_is_dir(new))
 		return (new);
 	free(new);
 	return (NULL);
@@ -57,7 +62,7 @@ static char	parse_cmd(char **dst, const char *cmd, char *path)
 		size_cmd++;
 	*dst = check_cmd(cmd, size_cmd, path, 0);
 	if (*dst)
-		return (ms_free_tmp_cmd(&tmp));
+		return (0);
 	while (*path)
 	{
 		size_path = 0;
@@ -65,7 +70,7 @@ static char	parse_cmd(char **dst, const char *cmd, char *path)
 			size_path++;
 		*dst = check_cmd(cmd, size_cmd, path, size_path);
 		if (*dst)
-			return (ms_free_tmp_cmd(&tmp));
+			return (0);
 		path += size_path + (path[size_path] == ':');
 	}
 	*dst = tmp;
